@@ -1,0 +1,20 @@
+{
+    "name": "rabbit/web",
+    "description": "rabbit web",
+    "type": "library",
+    "require": {
+        "rabbit/framework": "dev-master"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "albert",
+            "email": "63851587@qq.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "rabbit\\web\\": "src/"
+        }
+    }
+}
