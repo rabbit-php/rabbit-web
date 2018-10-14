@@ -19,7 +19,7 @@ class Response implements ResponseInterface
     /**
      * @var array
      */
-    private static $phrases = [
+    public static $phrases = [
         100 => 'Continue',
         101 => 'Switching Protocols',
         102 => 'Processing',
@@ -131,7 +131,7 @@ class Response implements ResponseInterface
     {
         $clone = clone $this;
         $clone->statusCode = (int)$code;
-        if (! $reasonPhrase && isset(self::$phrases[$code])) {
+        if (!$reasonPhrase && isset(self::$phrases[$code])) {
             $reasonPhrase = self::$phrases[$code];
         }
         $clone->reasonPhrase = $reasonPhrase;
@@ -165,7 +165,7 @@ class Response implements ResponseInterface
             foreach ($paths ?? [] as $path => $item) {
                 foreach ($item ?? [] as $name => $cookie) {
                     if ($cookie instanceof Cookie) {
-                        $this->swooleResponse->cookie($cookie->getName(), $cookie->getValue() ? : 1, $cookie->getExpiresTime(), $cookie->getPath(), $cookie->getDomain(), $cookie->isSecure(), $cookie->isHttpOnly());
+                        $this->swooleResponse->cookie($cookie->getName(), $cookie->getValue() ?: 1, $cookie->getExpiresTime(), $cookie->getPath(), $cookie->getDomain(), $cookie->isSecure(), $cookie->isHttpOnly());
                     }
                 }
             }
@@ -205,6 +205,6 @@ class Response implements ResponseInterface
         $clone->cookies[$cookie->getDomain()][$cookie->getPath()][$cookie->getName()] = $cookie;
         return $clone;
     }
-    
-    
+
+
 }

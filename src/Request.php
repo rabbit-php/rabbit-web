@@ -61,6 +61,9 @@ class Request implements ServerRequestInterface
      * @var UriInterface|Uri
      */
     private $uri;
+    
+    
+    private $requestTarget;
 
     public function __construct(\Swoole\Http\Request $swooleRequest)
     {
