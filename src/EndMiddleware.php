@@ -2,8 +2,8 @@
 /**
  * Created by PhpStorm.
  * User: Administrator
- * Date: 2018/10/13
- * Time: 16:07
+ * Date: 2018/10/15
+ * Time: 1:53
  */
 
 namespace rabbit\web;
@@ -11,14 +11,13 @@ namespace rabbit\web;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use rabbit\framework\core\Context;
-use rabbit\framework\core\ObjectFactory;
+use rabbit\core\Context;
 
-class RouteHandler implements RequestHandlerInterface
+class EndMiddleware implements MiddlewareInterface
 {
-
-    public function handle(ServerRequestInterface $request): ResponseInterface
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $route = explode('/', ltrim($request->getRequestTarget(), '/'));
         if (count($route) < 2) {
@@ -38,7 +37,13 @@ class RouteHandler implements RequestHandlerInterface
         /**
          * @var ResponseInterface $response
          */
-        $response = Context::get('response');
-        return $response->withContent(call_user_func_array([$controller, $action], $request->getQueryParams()));
+        $response = call_user_func_array([$controller, $action], $request->getQueryParams());
+        if (!$response instanceof ResponseInterface) {
+            $response = Context::get('response');
+            $response = $response->withBody($response);
+        }
+
+        return $response;
     }
+
 }

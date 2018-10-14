@@ -181,23 +181,6 @@ class Response implements ResponseInterface
         $this->swooleResponse->end($response->getBody()->getContents());
     }
 
-    /**
-     * 设置Body内容，使用默认的Stream
-     *
-     * @param string $content
-     * @return static
-     */
-    public function withContent($content): Response
-    {
-        if ($this->stream) {
-            return $this;
-        }
-
-        $new = clone $this;
-        $new->stream = new SwooleStream($content);
-        return $new;
-    }
-
     public function withCookie(Cookie $cookie)
     {
         $clone = clone $this;
