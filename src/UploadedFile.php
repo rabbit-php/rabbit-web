@@ -8,8 +8,8 @@
 
 namespace rabbit\web;
 
-use rabbit\framework\App;
 use Psr\Http\Message\UploadedFileInterface;
+use rabbit\framework\App;
 
 class UploadedFile implements UploadedFileInterface
 {
