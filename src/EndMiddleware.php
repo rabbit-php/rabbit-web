@@ -14,6 +14,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use rabbit\core\Context;
+use rabbit\core\ObjectFactory;
 
 class EndMiddleware implements MiddlewareInterface
 {
@@ -39,8 +40,8 @@ class EndMiddleware implements MiddlewareInterface
          */
         $response = call_user_func_array([$controller, $action], $request->getQueryParams());
         if (!$response instanceof ResponseInterface) {
-            $response = Context::get('response');
-            $response = $response->withBody($response);
+            $newResponse = Context::get('response');
+            $response = $newResponse->withContent($response);
         }
 
         return $response;
