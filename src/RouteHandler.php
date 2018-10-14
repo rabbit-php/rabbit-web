@@ -11,9 +11,9 @@ namespace rabbit\web;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 use rabbit\framework\core\Context;
 use rabbit\framework\core\ObjectFactory;
-use rabbit\framework\handler\RequestHandlerInterface;
 
 class RouteHandler implements RequestHandlerInterface
 {
