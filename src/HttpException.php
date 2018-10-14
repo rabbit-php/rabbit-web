@@ -9,7 +9,7 @@
 namespace rabbit\web;
 
 
-use rabbit\framework\core\UserException;
+use rabbit\core\UserException;
 
 class HttpException extends UserException
 {
