@@ -20,7 +20,7 @@ class EndMiddleware implements MiddlewareInterface
 {
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $route = explode('/', ltrim($request->getRequestTarget(), '/'));
+        $route = explode('/', ltrim($request->getUri()->getPath(), '/'));
         if (count($route) < 2) {
             throw new NotFoundHttpException("can not find the route:$route");
         }
