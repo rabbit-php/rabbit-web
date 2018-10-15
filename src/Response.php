@@ -128,7 +128,7 @@ class Response implements ResponseInterface
 
     public function withStatus($code, $reasonPhrase = '')
     {
-        $clone = clone $this;
+        $clone = $this;
         $clone->statusCode = (int)$code;
         if (!$reasonPhrase && isset(self::$phrases[$code])) {
             $reasonPhrase = self::$phrases[$code];
@@ -154,7 +154,11 @@ class Response implements ResponseInterface
          */
         // Write Headers to swoole response
         foreach ($response->getHeaders() as $key => $value) {
-            $this->swooleResponse->header($key, implode(';', $value));
+            if (is_array($value)) {
+                $this->swooleResponse->header($key, implode(';', $value));
+            } else {
+                $this->swooleResponse->header($key, $value);
+            }
         }
 
         /**
@@ -193,17 +197,95 @@ class Response implements ResponseInterface
             return $this;
         }
 
-        $new = clone $this;
-        $new->stream = new SwooleStream($content);
-        return $new;
+        $clone = $this;
+        $clone->stream = new SwooleStream($content);
+        return $clone;
     }
 
     public function withCookie(Cookie $cookie)
     {
-        $clone = clone $this;
+        $clone = $this;
         $clone->cookies[$cookie->getDomain()][$cookie->getPath()][$cookie->getName()] = $cookie;
         return $clone;
     }
 
+    /**
+     * @param mixed $value
+     * @return bool
+     */
+    public function isArrayable($value): bool
+    {
+        return is_array($value) || $value instanceof Arrayable;
+    }
 
+    /**
+     * @return string
+     */
+    public function getCharset(): string
+    {
+        return $this->charset;
+    }
+
+    /**
+     * @param string $charset
+     * @return Response
+     */
+    public function withCharset(string $charset): Response
+    {
+        $this->charset = $charset;
+        return $this;
+    }
+
+    /**
+     * Retrieve attributes derived from the request.
+     * The request "attributes" may be used to allow injection of any
+     * parameters derived from the request: e.g., the results of path
+     * match operations; the results of decrypting cookies; the results of
+     * deserializing non-form-encoded message bodies; etc. Attributes
+     * will be application and request specific, and CAN be mutable.
+     *
+     * @return array Attributes derived from the request.
+     */
+    public function getAttributes()
+    {
+        return $this->attributes;
+    }
+
+    /**
+     * Retrieve a single derived request attribute.
+     * Retrieves a single derived request attribute as described in
+     * getAttributes(). If the attribute has not been previously set, returns
+     * the default value as provided.
+     * This method obviates the need for a hasAttribute() method, as it allows
+     * specifying a default value to return if the attribute is not found.
+     *
+     * @see getAttributes()
+     * @param string $name The attribute name.
+     * @param mixed $default Default value to return if the attribute does not exist.
+     * @return mixed
+     */
+    public function getAttribute($name, $default = null)
+    {
+        return array_key_exists($name, $this->attributes) ? $this->attributes[$name] : $default;
+    }
+
+    /**
+     * Return an instance with the specified derived request attribute.
+     * This method allows setting a single derived request attribute as
+     * described in getAttributes().
+     * This method MUST be implemented in such a way as to retain the
+     * immutability of the message, and MUST return an instance that has the
+     * updated attribute.
+     *
+     * @see getAttributes()
+     * @param string $name The attribute name.
+     * @param mixed $value The value of the attribute.
+     * @return static
+     */
+    public function withAttribute($name, $value)
+    {
+        $clone = $this;
+        $clone->attributes[$name] = $value;
+        return $clone;
+    }
 }

@@ -6,7 +6,7 @@
  * Time: 1:53
  */
 
-namespace rabbit\web;
+namespace rabbit\web\middleware;
 
 
 use Psr\Http\Message\ResponseInterface;
@@ -15,6 +15,7 @@ use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use rabbit\core\Context;
 use rabbit\core\ObjectFactory;
+use rabbit\server\AttributeEnum;
 
 class EndMiddleware implements MiddlewareInterface
 {
@@ -40,8 +41,11 @@ class EndMiddleware implements MiddlewareInterface
          */
         $response = call_user_func_array([$controller, $action], $request->getQueryParams());
         if (!$response instanceof ResponseInterface) {
+            /**
+             * @var ResponseInterface $newResponse
+             */
             $newResponse = Context::get('response');
-            $response = $newResponse->withContent($response);
+            $response = $newResponse->withAttribute(AttributeEnum::RESPONSE_ATTRIBUTE, $response);
         }
 
         return $response;

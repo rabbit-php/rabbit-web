@@ -203,7 +203,7 @@ class Request implements ServerRequestInterface
 
     public function withCookieParams(array $cookies)
     {
-        $clone = clone $this;
+        $clone = $this;
         $clone->cookieParams = $cookies;
         return $clone;
     }
@@ -215,7 +215,7 @@ class Request implements ServerRequestInterface
 
     public function withQueryParams(array $query)
     {
-        $clone = clone $this;
+        $clone = $this;
         $clone->queryParams = $query;
         return $clone;
     }
@@ -227,7 +227,7 @@ class Request implements ServerRequestInterface
 
     public function withUploadedFiles(array $uploadedFiles)
     {
-        $clone = clone $this;
+        $clone = $this;
         $clone->uploadedFiles = $uploadedFiles;
         return $clone;
     }
@@ -239,7 +239,7 @@ class Request implements ServerRequestInterface
 
     public function withParsedBody($data)
     {
-        $clone = clone $this;
+        $clone = $this;
         $clone->parsedBody = $data;
         return $clone;
     }
@@ -256,7 +256,7 @@ class Request implements ServerRequestInterface
 
     public function withAttribute($name, $value)
     {
-        $clone = clone $this;
+        $clone = $this;
         $clone->attributes[$name] = $value;
         return $clone;
     }
@@ -267,7 +267,7 @@ class Request implements ServerRequestInterface
             return $this;
         }
 
-        $clone = clone $this;
+        $clone = $this;
         unset($clone->attributes[$name]);
 
         return $clone;
@@ -296,9 +296,9 @@ class Request implements ServerRequestInterface
             throw new \InvalidArgumentException('Invalid request target provided; cannot contain whitespace');
         }
 
-        $new = clone $this;
-        $new->requestTarget = $requestTarget;
-        return $new;
+        $clone = $this;
+        $clone->requestTarget = $requestTarget;
+        return $clone;
     }
 
     public function getMethod()
@@ -313,9 +313,9 @@ class Request implements ServerRequestInterface
         if (!in_array($method, $methods)) {
             throw new \InvalidArgumentException('Invalid Method');
         }
-        $new = clone $this;
-        $new->method = $method;
-        return $new;
+        $clone = $this;
+        $clone->method = $method;
+        return $clone;
     }
 
     public function getUri()
@@ -329,14 +329,14 @@ class Request implements ServerRequestInterface
             return $this;
         }
 
-        $new = clone $this;
-        $new->uri = $uri;
+        $clone = $this;
+        $clone->uri = $uri;
 
         if (!$preserveHost) {
-            $new->updateHostFromUri();
+            $clone->updateHostFromUri();
         }
 
-        return $new;
+        return $clone;
     }
 
     /**
@@ -347,7 +347,7 @@ class Request implements ServerRequestInterface
      */
     public function withServerParams(array $serverParams)
     {
-        $clone = clone $this;
+        $clone = $this;
         $clone->serverParams = $serverParams;
         return $clone;
     }

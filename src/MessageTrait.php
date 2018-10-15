@@ -56,9 +56,9 @@ trait MessageTrait
             return $this;
         }
 
-        $new = clone $this;
-        $new->protocol = $version;
-        return $new;
+        $clone = $this;
+        $clone->protocol = $version;
+        return $clone;
     }
 
     /**
@@ -156,10 +156,10 @@ trait MessageTrait
     {
         $normalized = strtolower($name);
 
-        $new = clone $this;
-        $new->headers[$normalized] = $value;
+        $clone = $this;
+        $clone->headers[$normalized] = $value;
 
-        return $new;
+        return $clone;
     }
 
     /**
@@ -168,11 +168,11 @@ trait MessageTrait
      */
     public function withHeaders(array $headers)
     {
-        $new = clone $this;
+        $clone = $this;
         foreach ($headers as $name => $value) {
-            $new = $new->withHeader(str_replace('_', '-', $name), $value);
+            $clone = $clone->withHeader(str_replace('_', '-', $name), $value);
         }
-        return $new;
+        return $clone;
     }
 
     /**
@@ -193,9 +193,9 @@ trait MessageTrait
     {
         $normalized = strtolower($name);
 
-        $new = clone $this;
-        $new->headers[$name] = $value;
-        return $new;
+        $clone = $this;
+        $clone->headers[$name] = $value;
+        return $clone;
     }
 
     /**
@@ -216,10 +216,10 @@ trait MessageTrait
             return $this;
         }
 
-        $new = clone $this;
-        unset($new->headers[$normalized]);
+        $clone = $this;
+        unset($clone->headers[$normalized]);
 
-        return $new;
+        return $clone;
     }
 
     /**
@@ -278,9 +278,9 @@ trait MessageTrait
             return $this;
         }
 
-        $new = clone $this;
-        $new->stream = $body;
-        return $new;
+        $clone = $this;
+        $clone->stream = $body;
+        return $clone;
     }
 
     /**
