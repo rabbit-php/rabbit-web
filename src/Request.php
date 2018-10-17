@@ -60,10 +60,14 @@ class Request implements ServerRequestInterface
      * @var UriInterface|Uri
      */
     private $uri;
-    
-    
+
+
     private $requestTarget;
 
+    /**
+     * Request constructor.
+     * @param \Swoole\Http\Request $swooleRequest
+     */
     public function __construct(\Swoole\Http\Request $swooleRequest)
     {
         $server = $swooleRequest->server;
@@ -83,6 +87,10 @@ class Request implements ServerRequestInterface
             ->setSwooleRequest($swooleRequest);
     }
 
+    /**
+     * @param array $files
+     * @return array
+     */
     private static function normalizeFiles(array $files)
     {
         $normalized = [];
@@ -103,6 +111,10 @@ class Request implements ServerRequestInterface
         return $normalized;
     }
 
+    /**
+     * @param array $value
+     * @return array|UploadedFile
+     */
     private static function createUploadedFileFromSpec(array $value)
     {
         if (is_array($value['tmp_name'])) {
@@ -112,6 +124,10 @@ class Request implements ServerRequestInterface
         return new UploadedFile($value['tmp_name'], (int)$value['size'], (int)$value['error'], $value['name'], $value['type']);
     }
 
+    /**
+     * @param array $files
+     * @return array
+     */
     private static function normalizeNestedFileSpec(array $files = [])
     {
         $normalizedFiles = [];
@@ -131,10 +147,8 @@ class Request implements ServerRequestInterface
     }
 
     /**
-     * Get a Uri populated with values from $swooleRequest->server.
      * @param \Swoole\Http\Request $swooleRequest
-     * @return \Psr\Http\Message\UriInterface
-     * @throws \InvalidArgumentException
+     * @return Uri|static
      */
     private static function getUriFromGlobals(\Swoole\Http\Request $swooleRequest)
     {
@@ -191,16 +205,26 @@ class Request implements ServerRequestInterface
         return $uri;
     }
 
+    /**
+     * @return array
+     */
     public function getServerParams()
     {
         return $this->serverParams;
     }
 
+    /**
+     * @return array
+     */
     public function getCookieParams()
     {
         return $this->cookieParams;
     }
 
+    /**
+     * @param array $cookies
+     * @return Request|static
+     */
     public function withCookieParams(array $cookies)
     {
         $clone = $this;
@@ -208,11 +232,18 @@ class Request implements ServerRequestInterface
         return $clone;
     }
 
+    /**
+     * @return array
+     */
     public function getQueryParams()
     {
         return $this->queryParams;
     }
 
+    /**
+     * @param array $query
+     * @return Request|static
+     */
     public function withQueryParams(array $query)
     {
         $clone = $this;
@@ -220,11 +251,18 @@ class Request implements ServerRequestInterface
         return $clone;
     }
 
+    /**
+     * @return array
+     */
     public function getUploadedFiles()
     {
         return $this->uploadedFiles;
     }
 
+    /**
+     * @param array $uploadedFiles
+     * @return Request|static
+     */
     public function withUploadedFiles(array $uploadedFiles)
     {
         $clone = $this;
@@ -232,11 +270,18 @@ class Request implements ServerRequestInterface
         return $clone;
     }
 
+    /**
+     * @return array|null|object
+     */
     public function getParsedBody()
     {
         return $this->parsedBody;
     }
 
+    /**
+     * @param array|null|object $data
+     * @return Request|static
+     */
     public function withParsedBody($data)
     {
         $clone = $this;
@@ -244,16 +289,29 @@ class Request implements ServerRequestInterface
         return $clone;
     }
 
+    /**
+     * @return array
+     */
     public function getAttributes()
     {
         return $this->attributes;
     }
 
+    /**
+     * @param string $name
+     * @param null $default
+     * @return mixed|null
+     */
     public function getAttribute($name, $default = null)
     {
         return array_key_exists($name, $this->attributes) ? $this->attributes[$name] : $default;
     }
 
+    /**
+     * @param string $name
+     * @param mixed $value
+     * @return Request|static
+     */
     public function withAttribute($name, $value)
     {
         $clone = $this;
@@ -261,6 +319,10 @@ class Request implements ServerRequestInterface
         return $clone;
     }
 
+    /**
+     * @param string $name
+     * @return $this|Request|static
+     */
     public function withoutAttribute($name)
     {
         if (false === array_key_exists($name, $this->attributes)) {
@@ -273,6 +335,9 @@ class Request implements ServerRequestInterface
         return $clone;
     }
 
+    /**
+     * @return string
+     */
     public function getRequestTarget()
     {
         if ($this->requestTarget !== null) {
@@ -290,6 +355,10 @@ class Request implements ServerRequestInterface
         return $target;
     }
 
+    /**
+     * @param mixed $requestTarget
+     * @return Request|static
+     */
     public function withRequestTarget($requestTarget)
     {
         if (preg_match('#\s#', $requestTarget)) {
@@ -301,11 +370,18 @@ class Request implements ServerRequestInterface
         return $clone;
     }
 
+    /**
+     * @return string
+     */
     public function getMethod()
     {
         return $this->method;
     }
 
+    /**
+     * @param string $method
+     * @return Request|static
+     */
     public function withMethod($method)
     {
         $method = strtoupper($method);
@@ -318,11 +394,19 @@ class Request implements ServerRequestInterface
         return $clone;
     }
 
+    /**
+     * @return UriInterface|Request|Uri
+     */
     public function getUri()
     {
         return $this->uri;
     }
 
+    /**
+     * @param UriInterface $uri
+     * @param bool $preserveHost
+     * @return $this|Request|static
+     */
     public function withUri(UriInterface $uri, $preserveHost = false)
     {
         if ($uri === $this->uri) {
@@ -340,10 +424,8 @@ class Request implements ServerRequestInterface
     }
 
     /**
-     * Return an instance with the specified server params.
-     *
      * @param array $serverParams
-     * @return static
+     * @return Request
      */
     public function withServerParams(array $serverParams)
     {
@@ -352,6 +434,10 @@ class Request implements ServerRequestInterface
         return $clone;
     }
 
+    /**
+     * @param array $headers
+     * @return $this
+     */
     private function setHeaders(array $headers)
     {
         $this->headers = [];
@@ -362,6 +448,9 @@ class Request implements ServerRequestInterface
         return $this;
     }
 
+    /**
+     *
+     */
     private function updateHostFromUri()
     {
         $host = $this->uri->getHost();

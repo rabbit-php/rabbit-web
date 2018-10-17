@@ -8,14 +8,17 @@
 
 namespace rabbit\web;
 
-
+/**
+ * Class BadRequestHttpException
+ * @package rabbit\web
+ */
 class BadRequestHttpException extends HttpException
 {
     /**
-     * Constructor.
-     * @param string $message error message
-     * @param int $code error code
-     * @param \Exception $previous The previous exception used for the exception chaining.
+     * BadRequestHttpException constructor.
+     * @param null $message
+     * @param int $code
+     * @param \Exception|null $previous
      */
     public function __construct($message = null, $code = 0, \Exception $previous = null)
     {

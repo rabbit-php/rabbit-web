@@ -17,6 +17,10 @@ use rabbit\contract\Arrayable;
 use rabbit\helpers\StringHelper;
 use rabbit\server\AttributeEnum;
 
+/**
+ * Class ResponseXmlFormater
+ * @package rabbit\web\formater
+ */
 class ResponseXmlFormater implements ResponseFormaterInterface
 {
     /**
@@ -51,10 +55,10 @@ class ResponseXmlFormater implements ResponseFormaterInterface
 
 
     /**
-     * Formats the specified response.
-     * @param Response $response the response to be formatted.
+     * @param ResponseInterface $response
+     * @return ResponseInterface
      */
-    public function format(ResponseInterface $response)
+    public function format(ResponseInterface $response): ResponseInterface
     {
         //data
         $data = $response->getAttribute(AttributeEnum::RESPONSE_ATTRIBUTE);
@@ -74,7 +78,9 @@ class ResponseXmlFormater implements ResponseFormaterInterface
                 $this->buildXml($dom, $data);
             }
             $content = $dom->saveXML();
+            $response->withContent($content);
         }
+        return $response;
     }
 
     /**

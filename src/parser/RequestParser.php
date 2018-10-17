@@ -7,7 +7,8 @@ use rabbit\core\ObjectFactory;
 use rabbit\helper\ArrayHelper;
 
 /**
- * The parser of request
+ * Class RequestParser
+ * @package rabbit\web\parser
  */
 class RequestParser implements RequestParserInterface
 {
@@ -28,8 +29,9 @@ class RequestParser implements RequestParserInterface
     private $headerKey = 'Content-type';
 
     /**
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @return \Psr\Http\Message\ServerRequestInterface
+     * @param ServerRequestInterface $request
+     * @return ServerRequestInterface
+     * @throws \Exception
      */
     public function parse(ServerRequestInterface $request): ServerRequestInterface
     {
@@ -48,8 +50,6 @@ class RequestParser implements RequestParserInterface
     }
 
     /**
-     * Merge default and users parsers
-     *
      * @return array
      */
     private function mergeParsers(): array
@@ -58,8 +58,6 @@ class RequestParser implements RequestParserInterface
     }
 
     /**
-     * Default parsers
-     *
      * @return array
      */
     public function defaultParsers(): array

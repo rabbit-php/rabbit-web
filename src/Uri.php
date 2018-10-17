@@ -11,6 +11,10 @@ namespace rabbit\web;
 
 use Psr\Http\Message\UriInterface;
 
+/**
+ * Class Uri
+ * @package rabbit\web
+ */
 class Uri implements UriInterface
 {
 
@@ -590,11 +594,10 @@ class Uri implements UriInterface
     }
 
     /**
-     * @param string $scheme
+     * @param $scheme
      * @return string
-     * @throws \InvalidArgumentException If the scheme is invalid.
      */
-    private function filterScheme($scheme)
+    private function filterScheme($scheme):string
     {
         if (!is_string($scheme)) {
             throw new \InvalidArgumentException('Scheme must be a string');
@@ -604,11 +607,10 @@ class Uri implements UriInterface
     }
 
     /**
-     * @param string $host
+     * @param $host
      * @return string
-     * @throws \InvalidArgumentException If the host is invalid.
      */
-    private function filterHost($host)
+    private function filterHost($host):string
     {
         if (!is_string($host)) {
             throw new \InvalidArgumentException('Host must be a string');
@@ -618,11 +620,10 @@ class Uri implements UriInterface
     }
 
     /**
-     * @param int|null $port
+     * @param $port
      * @return int|null
-     * @throws \InvalidArgumentException If the port is invalid.
      */
-    private function filterPort($port)
+    private function filterPort($port):?int
     {
         if ($port === null) {
             return null;
@@ -659,23 +660,18 @@ class Uri implements UriInterface
     }
 
     /**
-     * Get default port of the current scheme.
-     *
      * @return int|null
      */
-    public function getDefaultPort()
+    public function getDefaultPort():?int
     {
         return self::$defaultPorts[$this->getScheme()] ?? null;
     }
 
     /**
-     * Filters the path of a URI
-     *
-     * @param string $path
+     * @param $path
      * @return string
-     * @throws \InvalidArgumentException If the path is invalid.
      */
-    private function filterPath($path)
+    private function filterPath($path):string
     {
         if (!is_string($path)) {
             throw new \InvalidArgumentException('Path must be a string');
@@ -692,13 +688,10 @@ class Uri implements UriInterface
     }
 
     /**
-     * Filters the query string or fragment of a URI.
-     *
-     * @param string $str
+     * @param $str
      * @return string
-     * @throws \InvalidArgumentException If the query or fragment is invalid.
      */
-    private function filterQueryAndFragment($str)
+    private function filterQueryAndFragment($str):string
     {
         if (!is_string($str)) {
             throw new \InvalidArgumentException('Query and fragment must be a string');
@@ -718,7 +711,7 @@ class Uri implements UriInterface
      * @param array $match
      * @return string
      */
-    private function rawurlencodeMatchZero(array $match)
+    private function rawurlencodeMatchZero(array $match):string
     {
         return rawurlencode($match[0]);
     }

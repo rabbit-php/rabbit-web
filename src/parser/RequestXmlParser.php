@@ -15,15 +15,14 @@ use Psr\Http\Message\ServerRequestInterface;
 use rabbit\helper\XmlHelper;
 
 /**
- * The xml parser of request
- * @Bean()
+ * Class RequestXmlParser
+ * @package rabbit\web\parser
  */
 class RequestXmlParser implements RequestParserInterface
 {
     /**
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @return \Psr\Http\Message\ServerRequestInterface
-     * @throws \RuntimeException
+     * @param ServerRequestInterface $request
+     * @return ServerRequestInterface
      */
     public function parse(ServerRequestInterface $request): ServerRequestInterface
     {

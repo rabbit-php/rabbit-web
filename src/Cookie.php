@@ -8,7 +8,10 @@
 
 namespace rabbit\web;
 
-
+/**
+ * Class Cookie
+ * @package rabbit\web
+ */
 class Cookie
 {
     protected $name;
@@ -25,11 +28,8 @@ class Cookie
     const SAMESITE_STRICT = 'strict';
 
     /**
-     * Creates cookie from raw header string.
-     *
-     * @param string $cookie
+     * @param $cookie
      * @param bool $decode
-     *
      * @return static
      */
     public static function fromString($cookie, $decode = false)
@@ -75,17 +75,16 @@ class Cookie
     }
 
     /**
-     * @param string $name The name of the cookie
-     * @param string|null $value The value of the cookie
-     * @param int|string|\DateTimeInterface $expire The time the cookie expires
-     * @param string $path The path on the server in which the cookie will be available on
-     * @param string|null $domain The domain that the cookie is available to
-     * @param bool $secure Whether the cookie should only be transmitted over a secure HTTPS connection from the client
-     * @param bool $httpOnly Whether the cookie will be made accessible only through the HTTP protocol
-     * @param bool $raw Whether the cookie value should be sent with no url encoding
-     * @param string|null $sameSite Whether the cookie will be available for cross-site requests
-     *
-     * @throws \InvalidArgumentException
+     * Cookie constructor.
+     * @param $name
+     * @param null $value
+     * @param int $expire
+     * @param string $path
+     * @param null $domain
+     * @param bool $secure
+     * @param bool $httpOnly
+     * @param bool $raw
+     * @param null $sameSite
      */
     public function __construct(
         $name,
@@ -97,7 +96,8 @@ class Cookie
         $httpOnly = true,
         $raw = false,
         $sameSite = null
-    ) {
+    )
+    {
         // from PHP source code
         if (preg_match("/[=,; \t\r\n\013\014]/", $name)) {
             throw new \InvalidArgumentException(sprintf('The cookie name "%s" contains invalid characters.', $name));
@@ -139,11 +139,9 @@ class Cookie
     }
 
     /**
-     * Returns the cookie as a string.
-     *
-     * @return string The cookie
+     * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         $str = ($this->isRaw() ? $this->getName() : urlencode($this->getName())) . '=';
 
@@ -182,111 +180,89 @@ class Cookie
     }
 
     /**
-     * Gets the name of the cookie.
-     *
-     * @return string
+     * @return mixed
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
     /**
-     * Gets the value of the cookie.
-     *
-     * @return string|null
+     * @return null
      */
-    public function getValue()
+    public function getValue(): ?string
     {
         return $this->value;
     }
 
     /**
-     * Gets the domain that the cookie is available to.
-     *
-     * @return string|null
+     * @return null|string
      */
-    public function getDomain()
+    public function getDomain(): ?string
     {
         return $this->domain;
     }
 
     /**
-     * Gets the time the cookie expires.
-     *
      * @return int
      */
-    public function getExpiresTime()
+    public function getExpiresTime(): int
     {
         return $this->expire;
     }
 
     /**
-     * Gets the max-age attribute.
-     *
      * @return int
      */
-    public function getMaxAge()
+    public function getMaxAge(): int
     {
         return 0 !== $this->expire ? $this->expire - time() : 0;
     }
 
     /**
-     * Gets the path on the server in which the cookie will be available on.
-     *
      * @return string
      */
-    public function getPath()
+    public function getPath(): string
     {
         return $this->path;
     }
 
     /**
-     * Checks whether the cookie should only be transmitted over a secure HTTPS connection from the client.
-     *
      * @return bool
      */
-    public function isSecure()
+    public function isSecure(): bool
     {
         return $this->secure;
     }
 
     /**
-     * Checks whether the cookie will be made accessible only through the HTTP protocol.
-     *
      * @return bool
      */
-    public function isHttpOnly()
+    public function isHttpOnly(): bool
     {
         return $this->httpOnly;
     }
 
     /**
-     * Whether this cookie is about to be cleared.
-     *
      * @return bool
      */
-    public function isCleared()
+    public function isCleared(): bool
     {
         return $this->expire < time();
     }
 
     /**
-     * Checks if the cookie value should be sent with no url encoding.
-     *
      * @return bool
      */
-    public function isRaw()
+    public function isRaw(): bool
     {
         return $this->raw;
     }
 
     /**
-     * Gets the SameSite attribute.
-     *
-     * @return string|null
+     * @return null|string
      */
-    public function getSameSite()
+    public function getSameSite(): ?string
     {
         return $this->sameSite;
     }

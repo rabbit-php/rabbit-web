@@ -7,14 +7,14 @@ use Psr\Http\Message\ServerRequestInterface;
 use rabbit\helper\JsonHelper;
 
 /**
- * The json parser of request
+ * Class RequestJsonParser
+ * @package rabbit\web\parser
  */
 class RequestJsonParser implements RequestParserInterface
 {
     /**
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @return \Psr\Http\Message\ServerRequestInterface
-     * @throws \RuntimeException
+     * @param ServerRequestInterface $request
+     * @return ServerRequestInterface
      */
     public function parse(ServerRequestInterface $request): ServerRequestInterface
     {

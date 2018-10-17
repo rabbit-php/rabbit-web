@@ -17,8 +17,18 @@ use rabbit\core\Context;
 use rabbit\core\ObjectFactory;
 use rabbit\server\AttributeEnum;
 
+/**
+ * Class EndMiddleware
+ * @package rabbit\web\middleware
+ */
 class EndMiddleware implements MiddlewareInterface
 {
+    /**
+     * @param ServerRequestInterface $request
+     * @param RequestHandlerInterface $handler
+     * @return ResponseInterface
+     * @throws \Exception
+     */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $route = explode('/', ltrim($request->getUri()->getPath(), '/'));

@@ -8,9 +8,12 @@
 
 namespace rabbit\web;
 
-
 use Psr\Http\Message\StreamInterface;
 
+/**
+ * Class SwooleStream
+ * @package rabbit\web
+ */
 class SwooleStream implements StreamInterface
 {
 
@@ -83,7 +86,7 @@ class SwooleStream implements StreamInterface
      */
     public function getSize()
     {
-        if (! $this->size) {
+        if (!$this->size) {
             $this->size = strlen($this->getContents());
         }
         return $this->size;

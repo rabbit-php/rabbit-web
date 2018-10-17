@@ -121,11 +121,19 @@ class Response implements ResponseInterface
         $this->swooleResponse = $response;
     }
 
+    /**
+     * @return int
+     */
     public function getStatusCode()
     {
         return $this->statusCode;
     }
 
+    /**
+     * @param int $code
+     * @param string $reasonPhrase
+     * @return Response|static
+     */
     public function withStatus($code, $reasonPhrase = '')
     {
         $clone = $this;
@@ -137,6 +145,9 @@ class Response implements ResponseInterface
         return $clone;
     }
 
+    /**
+     * @return string
+     */
     public function getReasonPhrase()
     {
         return $this->reasonPhrase;
@@ -186,10 +197,8 @@ class Response implements ResponseInterface
     }
 
     /**
-     * 设置Body内容，使用默认的Stream
-     *
-     * @param string $content
-     * @return static
+     * @param $content
+     * @return Response
      */
     public function withContent($content): Response
     {
@@ -202,7 +211,11 @@ class Response implements ResponseInterface
         return $clone;
     }
 
-    public function withCookie(Cookie $cookie)
+    /**
+     * @param Cookie $cookie
+     * @return Response
+     */
+    public function withCookie(Cookie $cookie): Response
     {
         $clone = $this;
         $clone->cookies[$cookie->getDomain()][$cookie->getPath()][$cookie->getName()] = $cookie;
@@ -210,7 +223,7 @@ class Response implements ResponseInterface
     }
 
     /**
-     * @param mixed $value
+     * @param $value
      * @return bool
      */
     public function isArrayable($value): bool
@@ -237,14 +250,7 @@ class Response implements ResponseInterface
     }
 
     /**
-     * Retrieve attributes derived from the request.
-     * The request "attributes" may be used to allow injection of any
-     * parameters derived from the request: e.g., the results of path
-     * match operations; the results of decrypting cookies; the results of
-     * deserializing non-form-encoded message bodies; etc. Attributes
-     * will be application and request specific, and CAN be mutable.
-     *
-     * @return array Attributes derived from the request.
+     * @return array
      */
     public function getAttributes()
     {
@@ -252,17 +258,9 @@ class Response implements ResponseInterface
     }
 
     /**
-     * Retrieve a single derived request attribute.
-     * Retrieves a single derived request attribute as described in
-     * getAttributes(). If the attribute has not been previously set, returns
-     * the default value as provided.
-     * This method obviates the need for a hasAttribute() method, as it allows
-     * specifying a default value to return if the attribute is not found.
-     *
-     * @see getAttributes()
-     * @param string $name The attribute name.
-     * @param mixed $default Default value to return if the attribute does not exist.
-     * @return mixed
+     * @param $name
+     * @param null $default
+     * @return mixed|null
      */
     public function getAttribute($name, $default = null)
     {
@@ -270,17 +268,9 @@ class Response implements ResponseInterface
     }
 
     /**
-     * Return an instance with the specified derived request attribute.
-     * This method allows setting a single derived request attribute as
-     * described in getAttributes().
-     * This method MUST be implemented in such a way as to retain the
-     * immutability of the message, and MUST return an instance that has the
-     * updated attribute.
-     *
-     * @see getAttributes()
-     * @param string $name The attribute name.
-     * @param mixed $value The value of the attribute.
-     * @return static
+     * @param $name
+     * @param $value
+     * @return Response
      */
     public function withAttribute($name, $value)
     {

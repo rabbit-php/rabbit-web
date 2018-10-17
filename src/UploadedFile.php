@@ -11,6 +11,10 @@ namespace rabbit\web;
 use Psr\Http\Message\UploadedFileInterface;
 use rabbit\App;
 
+/**
+ * Class UploadedFile
+ * @package rabbit\web
+ */
 class UploadedFile implements UploadedFileInterface
 {
 

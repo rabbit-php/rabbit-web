@@ -14,6 +14,10 @@ use Psr\Http\Message\ServerRequestInterface;
 use rabbit\core\ObjectFactory;
 use rabbit\helper\ArrayHelper;
 
+/**
+ * Class ResponseFormater
+ * @package rabbit\web\formater
+ */
 class ResponseFormater implements IResponseFormatTool
 {
     /**

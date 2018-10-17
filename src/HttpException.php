@@ -11,6 +11,10 @@ namespace rabbit\web;
 
 use rabbit\core\UserException;
 
+/**
+ * Class HttpException
+ * @package rabbit\web
+ */
 class HttpException extends UserException
 {
     /**
@@ -20,11 +24,11 @@ class HttpException extends UserException
 
 
     /**
-     * Constructor.
-     * @param int $status HTTP status code, such as 404, 500, etc.
-     * @param string $message error message
-     * @param int $code error code
-     * @param \Exception $previous The previous exception used for the exception chaining.
+     * HttpException constructor.
+     * @param $status
+     * @param null $message
+     * @param int $code
+     * @param \Exception|null $previous
      */
     public function __construct($status, $message = null, $code = 0, \Exception $previous = null)
     {
@@ -33,9 +37,9 @@ class HttpException extends UserException
     }
 
     /**
-     * @return string the user-friendly name of this exception
+     * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         if (isset(Response::$phrases[$this->statusCode])) {
             return Response::$phrases[$this->statusCode];

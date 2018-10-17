@@ -13,9 +13,17 @@ use Psr\Http\Message\ResponseInterface;
 use rabbit\helper\JsonHelper;
 use rabbit\server\AttributeEnum;
 
+/**
+ * Class ResponseJsonFormater
+ * @package rabbit\web\formater
+ */
 class ResponseJsonFormater implements ResponseFormaterInterface
 {
 
+    /**
+     * @param ResponseInterface $response
+     * @return ResponseInterface
+     */
     public function format(ResponseInterface $response): ResponseInterface
     {
         //data

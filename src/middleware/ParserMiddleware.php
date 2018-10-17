@@ -17,6 +17,10 @@ use rabbit\core\ObjectFactory;
 use rabbit\web\parser\RequestParser;
 use rabbit\web\parser\RequestParserInterface;
 
+/**
+ * Class ParserMiddleware
+ * @package rabbit\web\middleware
+ */
 class ParserMiddleware implements MiddlewareInterface
 {
     /**
@@ -24,6 +28,12 @@ class ParserMiddleware implements MiddlewareInterface
      */
     private $parser = RequestParser::class;
 
+    /**
+     * @param ServerRequestInterface $request
+     * @param RequestHandlerInterface $handler
+     * @return ResponseInterface
+     * @throws \Exception
+     */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         if (is_string($this->parser)) {

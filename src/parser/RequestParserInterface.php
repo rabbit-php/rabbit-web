@@ -5,13 +5,14 @@ namespace rabbit\web\parser;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Interface of request parser
+ * Interface RequestParserInterface
+ * @package rabbit\web\parser
  */
 interface RequestParserInterface
 {
     /**
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @return \Psr\Http\Message\ServerRequestInterface
+     * @param ServerRequestInterface $request
+     * @return ServerRequestInterface
      */
     public function parse(ServerRequestInterface $request): ServerRequestInterface;
 }

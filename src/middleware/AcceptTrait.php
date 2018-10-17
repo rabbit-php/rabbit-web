@@ -8,6 +8,10 @@ use rabbit\core\ObjectFactory;
 use rabbit\web\formater\IResponseFormatTool;
 use rabbit\web\formater\ResponseFormater;
 
+/**
+ * Trait AcceptTrait
+ * @package rabbit\web\middleware
+ */
 trait AcceptTrait
 {
     /**
