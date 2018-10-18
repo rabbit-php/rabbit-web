@@ -21,5 +21,5 @@ interface ResponseFormaterInterface
      * @param ResponseInterface $response
      * @return ResponseInterface
      */
-    public function format(ResponseInterface $response): ResponseInterface;
+    public function format(ResponseInterface $response, $data): ResponseInterface;
 }

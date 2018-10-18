@@ -13,6 +13,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use rabbit\core\ObjectFactory;
 use rabbit\helper\ArrayHelper;
+use rabbit\server\AttributeEnum;
 
 /**
  * Class ResponseFormater
@@ -28,7 +29,7 @@ class ResponseFormater implements IResponseFormatTool
     /**
      * @var ResponseFormaterInterface
      */
-    private $default = ResponseRawFormater::class;
+    private $default = ResponseJsonFormater::class;
 
     /**
      * The of header
@@ -41,7 +42,7 @@ class ResponseFormater implements IResponseFormatTool
     {
         $contentType = $request->getHeaderLine($this->headerKey);
         $formaters = $this->mergeFormaters();
-
+        $data = $response->getAttribute(AttributeEnum::RESPONSE_ATTRIBUTE);
         if (!isset($formaters[$contentType])) {
             if (is_string($this->default)) {
                 $formater = ObjectFactory::get($this->default);
@@ -54,7 +55,7 @@ class ResponseFormater implements IResponseFormatTool
             $formater = ObjectFactory::get($formaterName);
         }
 
-        return $formater->format($response);
+        return $formater->format($response, $data);
     }
 
     private function mergeFormaters(): array

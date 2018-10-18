@@ -10,7 +10,6 @@ namespace rabbit\web\formater;
 
 
 use Psr\Http\Message\ResponseInterface;
-use rabbit\server\AttributeEnum;
 
 /**
  * Class ResponseRawFormater
@@ -22,9 +21,8 @@ class ResponseRawFormater implements ResponseFormaterInterface
      * @param ResponseInterface $response
      * @return ResponseInterface
      */
-    public function format(ResponseInterface $response): ResponseInterface
+    public function format(ResponseInterface $response, $data): ResponseInterface
     {
-        $data = $response->getAttribute(AttributeEnum::RESPONSE_ATTRIBUTE);
         // Headers
         $response = $response->withoutHeader('Content-Type')->withAddedHeader('Content-Type', 'text/plain');
         $response = $response->withCharset($response->getCharset() ?? "UTF-8");

@@ -15,7 +15,6 @@ use DOMText;
 use Psr\Http\Message\ResponseInterface;
 use rabbit\contract\Arrayable;
 use rabbit\helpers\StringHelper;
-use rabbit\server\AttributeEnum;
 
 /**
  * Class ResponseXmlFormater
@@ -58,13 +57,8 @@ class ResponseXmlFormater implements ResponseFormaterInterface
      * @param ResponseInterface $response
      * @return ResponseInterface
      */
-    public function format(ResponseInterface $response): ResponseInterface
+    public function format(ResponseInterface $response, $data): ResponseInterface
     {
-        //data
-        $data = $response->getAttribute(AttributeEnum::RESPONSE_ATTRIBUTE);
-        if ($data === null) {
-            return $response;
-        }
         // Headers
         $response = $response->withoutHeader('Content-Type')->withAddedHeader('Content-Type', $this->contentType);
         $response = $response->withCharset($response->getCharset() ?? "UTF-8");
