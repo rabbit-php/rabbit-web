@@ -16,6 +16,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 use rabbit\core\Context;
 use rabbit\core\ObjectFactory;
 use rabbit\server\AttributeEnum;
+use rabbit\web\NotFoundHttpException;
 
 /**
  * Class EndMiddleware
@@ -46,6 +47,9 @@ class EndMiddleware implements MiddlewareInterface
             }
         }
         $controller = ObjectFactory::get($controller);
+        if ($controller === null) {
+            throw new NotFoundHttpException("can not find the route:$route");
+        }
         /**
          * @var ResponseInterface $response
          */

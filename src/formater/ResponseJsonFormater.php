@@ -30,13 +30,11 @@ class ResponseJsonFormater implements ResponseFormaterInterface
         $response = $response->withCharset($response->getCharset() ?? "UTF-8");
 
         // Content
-        if ($data && ($response->isArrayable($data) || is_string($data) || is_object($data))) {
-            is_string($data) && $data = ['data' => $data];
-            $content = JsonHelper::encode($data, JSON_UNESCAPED_UNICODE);
-            $response = $response->withContent($content);
-        } else {
-            $response = $response->withContent('{}');
+        if (!$response->isArrayable($data) || !is_object($data)) {
+            $data = ['data' => $data];
         }
+        $content = JsonHelper::encode($data, JSON_UNESCAPED_UNICODE);
+        $response = $response->withContent($content);
 
         return $response;
     }
