@@ -38,6 +38,12 @@ class ResponseFormater implements IResponseFormatTool
      */
     private $headerKey = 'Content-type';
 
+    /**
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
+     * @return ResponseInterface
+     * @throws \Exception
+     */
     public function format(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
         $contentType = $request->getHeaderLine($this->headerKey);
@@ -58,6 +64,9 @@ class ResponseFormater implements IResponseFormatTool
         return $formater->format($response, $data);
     }
 
+    /**
+     * @return array
+     */
     private function mergeFormaters(): array
     {
         return ArrayHelper::merge($this->formaters, $this->defaultFormaters());
