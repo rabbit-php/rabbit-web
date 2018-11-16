@@ -99,6 +99,9 @@ trait MessageTrait
     public function withHeader($name, $value)
     {
         $normalized = strtolower($name);
+        if (!is_array($value)) {
+            $value = [$value];
+        }
         $value = $this->trimHeaderValues($value);
         $clone = $this;
         $clone->headers[$normalized] = $value;
