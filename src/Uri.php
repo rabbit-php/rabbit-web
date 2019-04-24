@@ -282,7 +282,7 @@ class Uri implements UriInterface
         if ($this->scheme === $scheme) {
             return $this;
         }
-        $clone = $this;
+        $clone = &$this;
         $clone->scheme = $scheme;
         // TODO add method
         $clone->removeDefaultPort();
@@ -311,7 +311,7 @@ class Uri implements UriInterface
         if ($this->userInfo === $info) {
             return $this;
         }
-        $clone = $this;
+        $clone = &$this;
         $clone->userInfo = $user;
         $clone->validateState();
     }
@@ -332,7 +332,7 @@ class Uri implements UriInterface
         if ($this->host === $host) {
             return $this;
         }
-        $clone = $this;
+        $clone = &$this;
         $clone->host = $host;
         $clone->validateState();
         return $clone;
@@ -358,7 +358,7 @@ class Uri implements UriInterface
         if ($this->port === $port) {
             return $this;
         }
-        $clone = $this;
+        $clone = &$this;
         $clone->port = $port;
         $clone->validateState();
         return $clone;
@@ -388,7 +388,7 @@ class Uri implements UriInterface
         if ($this->path === $path) {
             return $this;
         }
-        $clone = $this;
+        $clone = &$this;
         $clone->path = $path;
         $clone->validateState();
         return $clone;
@@ -412,7 +412,7 @@ class Uri implements UriInterface
         if ($this->query === $query) {
             return $this;
         }
-        $clone = $this;
+        $clone = &$this;
         $clone->query = $query;
         return $clone;
     }
@@ -473,7 +473,7 @@ class Uri implements UriInterface
         if ($this->fragment === $fragment) {
             return $this;
         }
-        $clone = $this;
+        $clone = &$this;
         $clone->fragment = $fragment;
         return $clone;
     }
