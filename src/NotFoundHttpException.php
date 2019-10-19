@@ -8,7 +8,6 @@
 
 namespace rabbit\web;
 
-
 class NotFoundHttpException extends HttpException
 {
     /**

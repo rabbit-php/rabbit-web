@@ -8,7 +8,6 @@
 
 namespace rabbit\web;
 
-
 use rabbit\core\UserException;
 use rabbit\httpserver\Response;
 

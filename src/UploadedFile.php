@@ -75,8 +75,7 @@ class UploadedFile implements UploadedFileInterface
         $errorStatus,
         $clientFilename = null,
         $clientMediaType = null
-    )
-    {
+    ) {
         $this->setError($errorStatus)
             ->setSize($size)
             ->setClientFilename($clientFilename)

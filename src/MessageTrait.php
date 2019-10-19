@@ -8,7 +8,6 @@
 
 namespace rabbit\web;
 
-
 use Psr\Http\Message\StreamInterface;
 
 /**

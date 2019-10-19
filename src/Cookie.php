@@ -96,8 +96,7 @@ class Cookie
         $httpOnly = true,
         $raw = false,
         $sameSite = null
-    )
-    {
+    ) {
         // from PHP source code
         if (preg_match("/[=,; \t\r\n\013\014]/", $name)) {
             throw new \InvalidArgumentException(sprintf('The cookie name "%s" contains invalid characters.', $name));
@@ -151,8 +150,10 @@ class Cookie
             $str .= $this->isRaw() ? $this->getValue() : rawurlencode($this->getValue());
 
             if (0 !== $this->getExpiresTime()) {
-                $str .= '; expires=' . gmdate('D, d-M-Y H:i:s T',
-                        $this->getExpiresTime()) . '; max-age=' . $this->getMaxAge();
+                $str .= '; expires=' . gmdate(
+                    'D, d-M-Y H:i:s T',
+                    $this->getExpiresTime()
+                ) . '; max-age=' . $this->getMaxAge();
             }
         }
 
