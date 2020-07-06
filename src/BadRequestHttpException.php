@@ -1,12 +1,7 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Administrator
- * Date: 2018/10/13
- * Time: 19:32
- */
+declare(strict_types=1);
 
-namespace rabbit\web;
+namespace Rabbit\Web;
 
 /**
  * Class BadRequestHttpException

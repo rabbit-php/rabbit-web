@@ -1,18 +1,13 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Administrator
- * Date: 2018/10/9
- * Time: 14:04
- */
+declare(strict_types=1);
 
-namespace rabbit\web;
+namespace Rabbit\Web;
 
 use Psr\Http\Message\UriInterface;
 
 /**
  * Class Uri
- * @package rabbit\web
+ * @package Rabbit\Web
  */
 class Uri implements UriInterface
 {
@@ -28,7 +23,7 @@ class Uri implements UriInterface
     /**
      * @var array
      */
-    private static $defaultPorts = [
+    private static array $defaultPorts = [
         'http' => 80,
         'https' => 443,
         'ftp' => 21,
@@ -45,57 +40,57 @@ class Uri implements UriInterface
     /**
      * @var string
      */
-    private static $charUnreserved = 'a-zA-Z0-9_\-\.~';
+    private static string $charUnreserved = 'a-zA-Z0-9_\-\.~';
 
     /**
      * @var string
      */
-    private static $charSubDelims = '!\$&\'\(\)\*\+,;=';
+    private static string $charSubDelims = '!\$&\'\(\)\*\+,;=';
 
     /**
      * @var array
      */
-    private static $replaceQuery = ['=' => '%3D', '&' => '%26'];
+    private static array $replaceQuery = ['=' => '%3D', '&' => '%26'];
 
     /**
      * @var string Uri scheme.
      */
-    private $scheme = '';
+    private string $scheme = '';
 
     /**
      * @var string Uri user info.
      */
-    private $userInfo = '';
+    private string $userInfo = '';
 
     /**
      * @var string Uri host.
      */
-    private $host = '';
+    private string $host = '';
 
     /**
      * @var int|null Uri port.
      */
-    private $port;
+    private ?int $port;
 
     /**
      * @var string Uri path.
      */
-    private $path = '';
+    private string $path = '';
 
     /**
      * @var string Uri query string.
      */
-    private $query = '';
+    private string $query = '';
 
     /**
      * @var string Uri fragment.
      */
-    private $fragment = '';
+    private string $fragment = '';
 
     /**
      * @param string $uri URI to parse
      */
-    public function __construct($uri = '')
+    public function __construct(string $uri = '')
     {
         // weak type check to also accept null until we can add scalar type hints
         if ($uri != '') {
@@ -428,7 +423,7 @@ class Uri implements UriInterface
      * @param string|null $value Value to set
      * @return UriInterface
      */
-    public static function withQueryValue(UriInterface $uri, $key, $value)
+    public static function withQueryValue(UriInterface $uri, string $key, ?string $value)
     {
         $current = $uri->getQuery();
 
@@ -530,7 +525,7 @@ class Uri implements UriInterface
      * @return string
      * @link https://tools.ietf.org/html/rfc3986#section-5.3
      */
-    public static function composeComponents($scheme, $authority, $path, $query, $fragment)
+    public static function composeComponents(string $scheme, string $authority, string $path, string $query, string $fragment)
     {
         $uri = '';
         // weak type checks to also accept null until we can add scalar type hints
@@ -554,7 +549,7 @@ class Uri implements UriInterface
     /**
      * Common state validate method
      */
-    private function validateState()
+    private function validateState(): void
     {
         if ($this->host === '' && ($this->scheme === 'http' || $this->scheme === 'https')) {
             $this->host = self::DEFAULT_HTTP_HOST;
@@ -596,12 +591,8 @@ class Uri implements UriInterface
      * @param $scheme
      * @return string
      */
-    private function filterScheme($scheme):string
+    private function filterScheme(string $scheme): string
     {
-        if (!is_string($scheme)) {
-            throw new \InvalidArgumentException('Scheme must be a string');
-        }
-
         return strtolower($scheme);
     }
 
@@ -609,12 +600,8 @@ class Uri implements UriInterface
      * @param $host
      * @return string
      */
-    private function filterHost($host):string
+    private function filterHost(string $host): string
     {
-        if (!is_string($host)) {
-            throw new \InvalidArgumentException('Host must be a string');
-        }
-
         return strtolower($host);
     }
 
@@ -622,13 +609,12 @@ class Uri implements UriInterface
      * @param $port
      * @return int|null
      */
-    private function filterPort($port):?int
+    private function filterPort(?int $port): ?int
     {
         if ($port === null) {
             return null;
         }
 
-        $port = (int)$port;
         if (1 > $port || 0xffff < $port) {
             throw new \InvalidArgumentException(sprintf('Invalid port: %d. Must be between 1 and 65535', $port));
         }
@@ -661,7 +647,7 @@ class Uri implements UriInterface
     /**
      * @return int|null
      */
-    public function getDefaultPort():?int
+    public function getDefaultPort(): ?int
     {
         return self::$defaultPorts[$this->getScheme()] ?? null;
     }
@@ -670,12 +656,8 @@ class Uri implements UriInterface
      * @param $path
      * @return string
      */
-    private function filterPath($path):string
+    private function filterPath(string $path): string
     {
-        if (!is_string($path)) {
-            throw new \InvalidArgumentException('Path must be a string');
-        }
-
         return preg_replace_callback(
             '/(?:[^' . self::$charUnreserved . self::$charSubDelims . '%:@\/]++|%(?![A-Fa-f0-9]{2}))/',
             [
@@ -690,12 +672,8 @@ class Uri implements UriInterface
      * @param $str
      * @return string
      */
-    private function filterQueryAndFragment($str):string
+    private function filterQueryAndFragment(string $str): string
     {
-        if (!is_string($str)) {
-            throw new \InvalidArgumentException('Query and fragment must be a string');
-        }
-
         return preg_replace_callback(
             '/(?:[^' . self::$charUnreserved . self::$charSubDelims . '%:@\/\?]++|%(?![A-Fa-f0-9]{2}))/',
             [
@@ -710,7 +688,7 @@ class Uri implements UriInterface
      * @param array $match
      * @return string
      */
-    private function rawurlencodeMatchZero(array $match):string
+    private function rawurlencodeMatchZero(array $match): string
     {
         return rawurlencode($match[0]);
     }

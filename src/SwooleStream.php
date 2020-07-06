@@ -1,18 +1,13 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Administrator
- * Date: 2018/10/9
- * Time: 17:00
- */
+declare(strict_types=1);
 
-namespace rabbit\web;
+namespace Rabbit\Web;
 
 use Psr\Http\Message\StreamInterface;
 
 /**
  * Class SwooleStream
- * @package rabbit\web
+ * @package Rabbit\Web
  */
 class SwooleStream implements StreamInterface
 {
@@ -20,12 +15,12 @@ class SwooleStream implements StreamInterface
     /**
      * @var string
      */
-    protected $contents;
+    protected string $contents;
 
     /**
-     * @var string
+     * @var int
      */
-    protected $size;
+    protected int $size;
 
     /**
      * SwooleStream constructor.

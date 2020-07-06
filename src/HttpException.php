@@ -1,26 +1,21 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Administrator
- * Date: 2018/10/13
- * Time: 19:30
- */
+declare(strict_types=1);
 
-namespace rabbit\web;
+namespace Rabbit\Web;
 
-use rabbit\core\UserException;
-use rabbit\httpserver\Response;
+
+use Rabbit\Base\Core\UserException;
 
 /**
  * Class HttpException
- * @package rabbit\web
+ * @package Rabbit\Web
  */
 class HttpException extends UserException
 {
     /**
      * @var int HTTP status code, such as 403, 404, 500, etc.
      */
-    public $statusCode;
+    public int $statusCode;
 
 
     /**

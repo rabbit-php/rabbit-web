@@ -1,12 +1,7 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Administrator
- * Date: 2018/10/9
- * Time: 17:43
- */
+declare(strict_types=1);
 
-namespace rabbit\web;
+namespace Rabbit\Web;
 
 use Psr\Http\Message\StreamInterface;
 
@@ -19,17 +14,17 @@ trait MessageTrait
     /**
      * @var array
      */
-    protected $headers = [];
+    protected array $headers = [];
 
     /**
      * @var string
      */
-    protected $protocol = '1.1';
+    protected string $protocol = '1.1';
 
     /**
      * @var StreamInterface
      */
-    protected $stream;
+    protected StreamInterface $stream;
 
     /**
      * @return string
@@ -41,7 +36,7 @@ trait MessageTrait
 
     /**
      * @param $version
-     * @return $this|MessageTrait
+     * @return $this
      */
     public function withProtocolVersion($version)
     {

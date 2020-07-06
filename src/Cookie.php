@@ -1,28 +1,32 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Administrator
- * Date: 2018/10/9
- * Time: 17:57
- */
+declare(strict_types=1);
 
-namespace rabbit\web;
+namespace Rabbit\Web;
 
 /**
  * Class Cookie
- * @package rabbit\web
+ * @package Rabbit\Web
  */
 class Cookie
 {
-    protected $name;
-    protected $value;
-    protected $domain;
-    protected $expire;
-    protected $path;
-    protected $secure;
-    protected $httpOnly;
-    private $raw;
-    private $sameSite;
+    /** @var string */
+    protected string $name;
+    /** @var string|null */
+    protected string $value;
+    /** @var string|null */
+    protected string $domain;
+    /** @var int */
+    protected int $expire;
+    /** @var string */
+    protected string $path;
+    /** @var bool */
+    protected bool $secure;
+    /** @var bool */
+    protected bool $httpOnly;
+    /** @var bool */
+    private bool $raw;
+    /** @var mixed|string */
+    private string $sameSite;
 
     const SAMESITE_LAX = 'lax';
     const SAMESITE_STRICT = 'strict';
@@ -76,27 +80,28 @@ class Cookie
 
     /**
      * Cookie constructor.
-     * @param $name
-     * @param null $value
+     * @param string $name
+     * @param string|null $value
      * @param int $expire
      * @param string $path
-     * @param null $domain
+     * @param string|null $domain
      * @param bool $secure
      * @param bool $httpOnly
      * @param bool $raw
-     * @param null $sameSite
+     * @param string|null $sameSite
      */
     public function __construct(
-        $name,
-        $value = null,
-        $expire = 0,
-        $path = '/',
-        $domain = null,
-        $secure = false,
-        $httpOnly = true,
-        $raw = false,
-        $sameSite = null
-    ) {
+        string $name,
+        string $value = null,
+        int $expire = 0,
+        string $path = '/',
+        string $domain = null,
+        bool $secure = false,
+        bool $httpOnly = true,
+        bool $raw = false,
+        string $sameSite = null
+    )
+    {
         // from PHP source code
         if (preg_match("/[=,; \t\r\n\013\014]/", $name)) {
             throw new \InvalidArgumentException(sprintf('The cookie name "%s" contains invalid characters.', $name));
@@ -106,25 +111,14 @@ class Cookie
             throw new \InvalidArgumentException('The cookie name cannot be empty.');
         }
 
-        // convert expiration time to a Unix timestamp
-        if ($expire instanceof \DateTimeInterface) {
-            $expire = $expire->format('U');
-        } elseif (!is_numeric($expire)) {
-            $expire = strtotime($expire);
-
-            if (false === $expire) {
-                throw new \InvalidArgumentException('The cookie expiration time is not valid.');
-            }
-        }
-
         $this->name = $name;
         $this->value = $value;
         $this->domain = $domain;
         $this->expire = 0 < $expire ? (int)$expire : 0;
         $this->path = empty($path) ? '/' : $path;
-        $this->secure = (bool)$secure;
-        $this->httpOnly = (bool)$httpOnly;
-        $this->raw = (bool)$raw;
+        $this->secure = $secure;
+        $this->httpOnly = $httpOnly;
+        $this->raw = $raw;
 
         if (null !== $sameSite) {
             $sameSite = strtolower($sameSite);
@@ -151,9 +145,9 @@ class Cookie
 
             if (0 !== $this->getExpiresTime()) {
                 $str .= '; expires=' . gmdate(
-                    'D, d-M-Y H:i:s T',
-                    $this->getExpiresTime()
-                ) . '; max-age=' . $this->getMaxAge();
+                        'D, d-M-Y H:i:s T',
+                        $this->getExpiresTime()
+                    ) . '; max-age=' . $this->getMaxAge();
             }
         }
 

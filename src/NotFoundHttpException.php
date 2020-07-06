@@ -1,13 +1,11 @@
 <?php
+declare(strict_types=1);
+
+namespace Rabbit\Web;
 /**
- * Created by PhpStorm.
- * User: Administrator
- * Date: 2018/10/13
- * Time: 19:35
+ * Class NotFoundHttpException
+ * @package Rabbit\Web
  */
-
-namespace rabbit\web;
-
 class NotFoundHttpException extends HttpException
 {
     /**

@@ -1,19 +1,14 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Administrator
- * Date: 2018/10/9
- * Time: 17:37
- */
+declare(strict_types=1);
 
-namespace rabbit\web;
+namespace Rabbit\Web;
 
 use Psr\Http\Message\UploadedFileInterface;
-use rabbit\App;
+use Rabbit\Base\App;
 
 /**
  * Class UploadedFile
- * @package rabbit\web
+ * @package Rabbit\Web
  */
 class UploadedFile implements UploadedFileInterface
 {
@@ -21,7 +16,7 @@ class UploadedFile implements UploadedFileInterface
     /**
      * @var int[]
      */
-    private static $errors = [
+    private static array $errors = [
         UPLOAD_ERR_OK,
         UPLOAD_ERR_INI_SIZE,
         UPLOAD_ERR_FORM_SIZE,
@@ -35,32 +30,32 @@ class UploadedFile implements UploadedFileInterface
     /**
      * @var string
      */
-    private $clientFilename;
+    private string $clientFilename;
 
     /**
      * @var string
      */
-    private $clientMediaType;
+    private string $clientMediaType;
 
     /**
      * @var int
      */
-    private $error;
+    private int $error;
 
     /**
      * @var null|string
      */
-    private $tmpFile;
+    private ?string $tmpFile;
 
     /**
      * @var bool
      */
-    private $moved = false;
+    private bool $moved = false;
 
     /**
      * @var int
      */
-    private $size;
+    private int $size;
 
     /**
      * @param string $tmpFile
@@ -70,12 +65,13 @@ class UploadedFile implements UploadedFileInterface
      * @param string|null $clientMediaType
      */
     public function __construct(
-        $tmpFile,
-        $size,
-        $errorStatus,
-        $clientFilename = null,
-        $clientMediaType = null
-    ) {
+        string $tmpFile,
+        int $size,
+        int $errorStatus,
+        ?string $clientFilename = null,
+        ?string $clientMediaType = null
+    )
+    {
         $this->setError($errorStatus)
             ->setSize($size)
             ->setClientFilename($clientFilename)
@@ -90,27 +86,18 @@ class UploadedFile implements UploadedFileInterface
      * @return $this
      * @throws InvalidArgumentException
      */
-    private function setFile($file)
+    private function setFile(string $file)
     {
-        if (is_string($file)) {
-            $this->tmpFile = $file;
-        } else {
-            throw new \InvalidArgumentException('Invalid stream or file provided for UploadedFile');
-        }
+        $this->tmpFile = $file;
         return $this;
     }
 
     /**
      * @param int $error
      * @return $this
-     * @throws \InvalidArgumentException
      */
-    private function setError($error)
+    private function setError(int $error)
     {
-        if (false === is_int($error)) {
-            throw new \InvalidArgumentException('Upload file error status must be an integer');
-        }
-
         if (false === in_array($error, UploadedFile::$errors)) {
             throw new \InvalidArgumentException('Invalid error status for UploadedFile');
         }
@@ -124,12 +111,8 @@ class UploadedFile implements UploadedFileInterface
      * @return $this
      * @throws \InvalidArgumentException
      */
-    private function setSize($size)
+    private function setSize(int $size)
     {
-        if (false === is_int($size)) {
-            throw new \InvalidArgumentException('Upload file size must be an integer');
-        }
-
         $this->size = $size;
         return $this;
     }
@@ -139,12 +122,8 @@ class UploadedFile implements UploadedFileInterface
      * @return $this
      * @throws \InvalidArgumentException
      */
-    private function setClientFilename($clientFilename)
+    private function setClientFilename(?string $clientFilename)
     {
-        if (false === $this->isStringOrNull($clientFilename)) {
-            throw new \InvalidArgumentException('Upload file client filename must be a string or null');
-        }
-
         $this->clientFilename = $clientFilename;
         return $this;
     }
@@ -154,32 +133,10 @@ class UploadedFile implements UploadedFileInterface
      * @return $this
      * @throws \InvalidArgumentException
      */
-    private function setClientMediaType($clientMediaType)
+    private function setClientMediaType(?string $clientMediaType)
     {
-        if (false === $this->isStringOrNull($clientMediaType)) {
-            throw new \InvalidArgumentException('Upload file client media type must be a string or null');
-        }
-
         $this->clientMediaType = $clientMediaType;
         return $this;
-    }
-
-    /**
-     * @param mixed $param
-     * @return boolean
-     */
-    private function isStringOrNull($param): bool
-    {
-        return in_array(gettype($param), ['string', 'NULL']);
-    }
-
-    /**
-     * @param mixed $param
-     * @return boolean
-     */
-    private function isStringNotEmpty($param): bool
-    {
-        return is_string($param) && false === empty($param);
     }
 
     /**
@@ -200,9 +157,6 @@ class UploadedFile implements UploadedFileInterface
         return $this->moved;
     }
 
-    /**
-     * @throws \Swoft\Exception\RuntimeException if is moved or not ok
-     */
     private function validateActive()
     {
         if (false === $this->isOk()) {
@@ -215,18 +169,7 @@ class UploadedFile implements UploadedFileInterface
     }
 
     /**
-     * Retrieve a stream representing the uploaded file.
-     * This method MUST return a StreamInterface instance, representing the
-     * uploaded file. The purpose of this method is to allow utilizing native PHP
-     * stream functionality to manipulate the file upload, such as
-     * stream_copy_to_stream() (though the result will need to be decorated in a
-     * native PHP stream wrapper to work with such functions).
-     * If the moveTo() method has been called previously, this method MUST raise
-     * an exception.
-     *
-     * @return StreamInterface Stream representation of the uploaded file.
-     * @throws \RuntimeException in cases when no stream is available or can be
-     *     created.
+     * @return \Psr\Http\Message\StreamInterface|void
      */
     public function getStream()
     {
@@ -234,30 +177,7 @@ class UploadedFile implements UploadedFileInterface
     }
 
     /**
-     * Move the uploaded file to a new location.
-     * Use this method as an alternative to move_uploaded_file(). This method is
-     * guaranteed to work in both SAPI and non-SAPI environments.
-     * Implementations must determine which environment they are in, and use the
-     * appropriate method (move_uploaded_file(), rename(), or a stream
-     * operation) to perform the operation.
-     * $targetPath may be an absolute path, or a relative path. If it is a
-     * relative path, resolution should be the same as used by PHP's rename()
-     * function.
-     * The original file or stream MUST be removed on completion.
-     * If this method is called more than once, any subsequent calls MUST raise
-     * an exception.
-     * When used in an SAPI environment where $_FILES is populated, when writing
-     * files via moveTo(), is_uploaded_file() and move_uploaded_file() SHOULD be
-     * used to ensure permissions and upload status are verified correctly.
-     * If you wish to move to a stream, use getStream(), as SAPI operations
-     * cannot guarantee writing to stream destinations.
-     *
-     * @see http://php.net/is_uploaded_file
-     * @see http://php.net/move_uploaded_file
-     * @param string $targetPath Path to which to move the uploaded file.
-     * @throws \InvalidArgumentException if the $targetPath specified is invalid.
-     * @throws \RuntimeException on any error during the move operation, or on
-     *                           the second or subsequent call to the method.
+     * @param string $targetPath
      */
     public function moveTo($targetPath)
     {
@@ -278,12 +198,7 @@ class UploadedFile implements UploadedFileInterface
     }
 
     /**
-     * Retrieve the file size.
-     * Implementations SHOULD return the value stored in the "size" key of
-     * the file in the $_FILES array if available, as PHP calculates this based
-     * on the actual size transmitted.
-     *
-     * @return int|null The file size in bytes or null if unknown.
+     * @return int|null
      */
     public function getSize()
     {
@@ -291,15 +206,7 @@ class UploadedFile implements UploadedFileInterface
     }
 
     /**
-     * Retrieve the error associated with the uploaded file.
-     * The return value MUST be one of PHP's UPLOAD_ERR_XXX constants.
-     * If the file was uploaded successfully, this method MUST return
-     * UPLOAD_ERR_OK.
-     * Implementations SHOULD return the value stored in the "error" key of
-     * the file in the $_FILES array.
-     *
-     * @see http://php.net/manual/en/features.file-upload.errors.php
-     * @return int One of PHP's UPLOAD_ERR_XXX constants.
+     * @return int
      */
     public function getError()
     {
@@ -307,15 +214,7 @@ class UploadedFile implements UploadedFileInterface
     }
 
     /**
-     * Retrieve the filename sent by the client.
-     * Do not trust the value returned by this method. A client could send
-     * a malicious filename with the intention to corrupt or hack your
-     * application.
-     * Implementations SHOULD return the value stored in the "name" key of
-     * the file in the $_FILES array.
-     *
-     * @return string|null The filename sent by the client or null if none
-     *     was provided.
+     * @return string|null
      */
     public function getClientFilename()
     {
@@ -323,15 +222,7 @@ class UploadedFile implements UploadedFileInterface
     }
 
     /**
-     * Retrieve the media type sent by the client.
-     * Do not trust the value returned by this method. A client could send
-     * a malicious media type with the intention to corrupt or hack your
-     * application.
-     * Implementations SHOULD return the value stored in the "type" key of
-     * the file in the $_FILES array.
-     *
-     * @return string|null The media type sent by the client or null if none
-     *     was provided.
+     * @return string|null
      */
     public function getClientMediaType()
     {
@@ -341,7 +232,7 @@ class UploadedFile implements UploadedFileInterface
     /**
      * @return array
      */
-    public function toArray()
+    public function toArray(): array
     {
         return [
             'name' => $this->getClientFilename(),
