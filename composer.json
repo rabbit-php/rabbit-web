@@ -4,7 +4,9 @@
     "type": "library",
     "require": {
         "rabbit/base": "dev-master",
-        "psr/http-message": "^1.0"
+        "psr/http-message": "^1.0",
+        "psr/http-server-handler": "^1.0",
+        "psr/http-server-middleware": "^1.0"
     },
     "license": "MIT",
     "authors": [
