@@ -70,7 +70,7 @@ class Uri implements UriInterface
     /**
      * @var int|null Uri port.
      */
-    private ?int $port;
+    private ?int $port = null;
 
     /**
      * @var string Uri path.

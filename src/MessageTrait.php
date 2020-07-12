@@ -24,7 +24,7 @@ trait MessageTrait
     /**
      * @var StreamInterface
      */
-    protected StreamInterface $stream;
+    protected ?StreamInterface $stream = null;
 
     /**
      * @return string
