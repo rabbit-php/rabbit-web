@@ -348,7 +348,7 @@ class Uri implements UriInterface
      */
     public function withPort($port)
     {
-        $port = $this->filterPort($port);
+        $port = $this->filterPort($port ?? (int)$port);
         if ($this->port === $port) {
             return $this;
         }
@@ -576,7 +576,7 @@ class Uri implements UriInterface
         $this->scheme = isset($parts['scheme']) ? $this->filterScheme($parts['scheme']) : '';
         $this->userInfo = isset($parts['user']) ? $parts['user'] : '';
         $this->host = isset($parts['host']) ? $this->filterHost($parts['host']) : '';
-        $this->port = isset($parts['port']) ? $this->filterPort($parts['port']) : null;
+        $this->port = isset($parts['port']) ? $this->filterPort((int)$parts['port']) : null;
         $this->path = isset($parts['path']) ? $this->filterPath($parts['path']) : '';
         $this->query = isset($parts['query']) ? $this->filterQueryAndFragment($parts['query']) : '';
         $this->fragment = isset($parts['fragment']) ? $this->filterQueryAndFragment($parts['fragment']) : '';
