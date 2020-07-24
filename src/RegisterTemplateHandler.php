@@ -10,7 +10,6 @@ use Rabbit\Base\Core\Context;
 use Rabbit\Log\ConsoleColor;
 use Rabbit\Log\Logger;
 use Rabbit\Log\TemplateInterface;
-use Rabbit\Web\AttributeEnum;
 
 /**
  * Class RegisterTemplateHandler
@@ -38,7 +37,7 @@ class RegisterTemplateHandler implements TemplateInterface
     {
         if (($request = Context::get(Logger::CONTEXT_KEY)) === null) {
             /** @var ServerRequestInterface $serverRequest */
-            if (($serverRequest = Context::get('request')) !== null) {
+            if (($serverRequest = Context::get('request'))) {
                 $uri = $serverRequest->getUri();
                 $requestId = $serverRequest->getAttribute(AttributeEnum::REQUESTID_ATTRIBUTE);
                 !$requestId && $requestId = uniqid();
