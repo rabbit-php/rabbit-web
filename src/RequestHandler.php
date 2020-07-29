@@ -7,12 +7,11 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use rabbit\core\Context;
-use rabbit\core\ObjectFactory;
+use Rabbit\Base\Core\Context;
 
 /**
  * Class RequestHandler
- * @package rabbit\server
+ * @package Rabbit\Web
  */
 class RequestHandler implements RequestHandlerInterface
 {
@@ -37,7 +36,7 @@ class RequestHandler implements RequestHandlerInterface
         } else {
             $handler = $this->middlewares[$this->offset];
         }
-        \is_string($handler) && $handler = ObjectFactory::get($handler);
+        \is_string($handler) && $handler = getDI($handler);
 
         if (!$handler instanceof MiddlewareInterface) {
             throw new \InvalidArgumentException('Invalid Handler. It must be an instance of MiddlewareInterface');
