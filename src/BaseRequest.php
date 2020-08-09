@@ -5,8 +5,6 @@ namespace Rabbit\Web;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
-use rabbit\web\MessageTrait;
-use rabbit\web\Uri;
 use Swoole\Http\Request;
 
 /**

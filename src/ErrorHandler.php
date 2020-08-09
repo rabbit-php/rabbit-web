@@ -4,9 +4,8 @@ declare(strict_types=1);
 namespace Rabbit\Web;
 
 use Psr\Http\Message\ResponseInterface;
-use Rabbit\Base\Core\Context;
 use Rabbit\Base\Helper\ExceptionHelper;
-use Rabbit\Web\HttpException;
+use Rabbit\HttpServer\Exceptions\HttpException;
 use Throwable;
 
 class ErrorHandler implements ErrorHandlerInterface
@@ -18,8 +17,7 @@ class ErrorHandler implements ErrorHandlerInterface
      */
     public function handle(Throwable $throw): ResponseInterface
     {
-        /* @var ResponseInterface $response */
-        $response = Context::get('response');
+        $response = ResponseContext::get();
         if ($response === null) {
             throw $throw;
         }
