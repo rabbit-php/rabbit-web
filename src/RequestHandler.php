@@ -7,15 +7,17 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Rabbit\Base\Core\BaseObject;
 use Throwable;
+use function is_string;
 
 /**
  * Class RequestHandler
  * @package Rabbit\Web
  */
-class RequestHandler implements RequestHandlerInterface
+class RequestHandler extends BaseObject implements RequestHandlerInterface
 {
-    private ?array $middlewares = null;
+    protected ?array $middlewares = null;
     private int $offset = 0;
 
     /**
@@ -30,7 +32,7 @@ class RequestHandler implements RequestHandlerInterface
         } else {
             $handler = $this->middlewares[$this->offset];
         }
-        \is_string($handler) && $handler = getDI($handler);
+        is_string($handler) && $handler = getDI($handler);
 
         if (!$handler instanceof MiddlewareInterface) {
             throw new \InvalidArgumentException('Invalid Handler. It must be an instance of MiddlewareInterface');
