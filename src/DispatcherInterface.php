@@ -13,9 +13,11 @@ use Psr\Http\Message\ServerRequestInterface;
 interface DispatcherInterface
 {
     /**
-     * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
-     * @return ResponseInterface
+     * @Author Albert 63851587@qq.com
+     * @DateTime 2020-10-23
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface $response
+     * @return void
      */
-    public function dispatch(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface;
+    public function dispatch(ServerRequestInterface $request, ResponseInterface $response): void;
 }

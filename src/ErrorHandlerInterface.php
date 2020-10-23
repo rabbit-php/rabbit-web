@@ -1,10 +1,11 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Rabbit\Web;
 
-use Psr\Http\Message\ResponseInterface;
 use Throwable;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * Interface ErrorHandlerInterface
@@ -13,8 +14,11 @@ use Throwable;
 interface ErrorHandlerInterface
 {
     /**
-     * @param Throwable $throw
-     * @return mixed
+     * @Author Albert 63851587@qq.com
+     * @DateTime 2020-10-23
+     * @param \Throwable $throw
+     * @param \Psr\Http\Message\ResponseInterface $response
+     * @return \Psr\Http\Message\ResponseInterface
      */
-    public function handle(Throwable $throw): ResponseInterface;
+    public function handle(Throwable $throw, ResponseInterface $response): void;
 }

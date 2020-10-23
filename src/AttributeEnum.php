@@ -17,13 +17,6 @@ class AttributeEnum
     const ROUTER_ATTRIBUTE = 'requestHandler';
 
     /**
-     * The attribute of response data
-     *
-     * @var string
-     */
-    const RESPONSE_ATTRIBUTE = 'responseAttribute';
-
-    /**
      * The attribute of requesId
      *
      * @var string
