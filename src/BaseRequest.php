@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace Rabbit\Web;
 
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\UriInterface;
 use Swoole\Http\Request;
+use Psr\Http\Message\UriInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * Class BaseRequest
@@ -74,18 +74,6 @@ class BaseRequest implements ServerRequestInterface
             ->withParsedBody($body)
             ->withHeaders($headers);
         $this->uri = self::getUriFromGlobals($headers, $server);
-    }
-
-    /**
-     * @param string $name
-     * @param mixed $value
-     * @return Request|static
-     */
-    public function withAttribute($name, $value)
-    {
-        $clone = &$this;
-        $clone->attributes[$name] = $value;
-        return $clone;
     }
 
     /**

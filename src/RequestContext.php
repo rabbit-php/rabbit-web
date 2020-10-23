@@ -31,15 +31,4 @@ class RequestContext
         }
         return null;
     }
-
-    /**
-     * @return bool
-     */
-    public static function has(): bool
-    {
-        if ($context = Co::getContext() && isset($context['request'])) {
-            return true;
-        }
-        return false;
-    }
 }

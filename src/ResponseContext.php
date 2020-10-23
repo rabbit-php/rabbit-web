@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Rabbit\Web;
@@ -12,12 +13,17 @@ use Psr\Http\Message\ResponseInterface;
  */
 class ResponseContext
 {
+    protected static ?ResponseInterface $response = null;
     /**
-     * @param ResponseInterface $request
+     * @param ResponseInterface $response
      */
-    public static function set(ResponseInterface $request)
+    public static function set(ResponseInterface $response)
     {
-        Co::getContext(getRootId())['response'] = $request;
+        if (-1 !== $cid = getRootId()) {
+            Co::getContext($cid)['response'] = $response;
+        } else {
+            self::$response = $response;
+        }
     }
 
     /**
@@ -25,21 +31,13 @@ class ResponseContext
      */
     public static function get(): ?ResponseInterface
     {
-        $context = Co::getContext(getRootId());
-        if ($context && isset($context['response'])) {
-            return $context['response'];
+        if (-1 !== $cid = getRootId()) {
+            $context = Co::getContext($cid);
+            if ($context && isset($context['response'])) {
+                return $context['response'];
+            }
+            return null;
         }
-        return null;
-    }
-
-    /**
-     * @return bool
-     */
-    public static function has(): bool
-    {
-        if ($context = Co::getContext(getRootId()) && isset($context['response'])) {
-            return true;
-        }
-        return false;
+        return self::$response === null ? null : (clone self::$response);
     }
 }
