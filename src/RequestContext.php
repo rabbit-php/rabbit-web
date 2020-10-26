@@ -1,9 +1,9 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Rabbit\Web;
 
-use Co;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
@@ -17,7 +17,7 @@ class RequestContext
      */
     public static function set(ServerRequestInterface $request)
     {
-        Co::getContext()['request'] = $request;
+        getContext()['request'] = $request;
     }
 
     /**
@@ -25,7 +25,7 @@ class RequestContext
      */
     public static function get(): ?ServerRequestInterface
     {
-        $context = Co::getContext();
+        $context = getContext();
         if ($context && isset($context['request'])) {
             return $context['request'];
         }

@@ -1,13 +1,14 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Rabbit\Web;
 
-use DI\DependencyException;
-use DI\NotFoundException;
-use Rabbit\Base\Core\Context;
-use Rabbit\Log\ConsoleColor;
 use Rabbit\Log\Logger;
+use DI\NotFoundException;
+use DI\DependencyException;
+use Rabbit\Log\ConsoleColor;
+use Rabbit\Base\Core\Context;
 use Rabbit\Log\TemplateInterface;
 
 /**
@@ -35,7 +36,7 @@ class RegisterTemplateHandler implements TemplateInterface
     public function handle(): array
     {
         if (($request = Context::get(Logger::CONTEXT_KEY)) === null) {
-            if ($serverRequest = Context::get('request')) {
+            if ($serverRequest = RequestContext::get()) {
                 $uri = $serverRequest->getUri();
                 $requestId = $serverRequest->getAttribute(AttributeEnum::REQUESTID_ATTRIBUTE);
                 !$requestId && $requestId = uniqid();
