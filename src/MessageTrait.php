@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Rabbit\Web;
@@ -44,9 +45,9 @@ trait MessageTrait
             return $this;
         }
 
-        $clone = &$this;
-        $clone->protocol = $version;
-        return $clone;
+
+        $this->protocol = $version;
+        return $this;
     }
 
     /**
@@ -97,10 +98,10 @@ trait MessageTrait
             $value = [$value];
         }
         $value = $this->trimHeaderValues($value);
-        $clone = &$this;
-        $clone->headers[$normalized] = $value;
 
-        return $clone;
+        $this->headers[$normalized] = $value;
+
+        return $this;
     }
 
     /**
@@ -109,11 +110,11 @@ trait MessageTrait
      */
     public function withHeaders(array $headers)
     {
-        $clone = &$this;
+
         foreach ($headers as $name => $value) {
-            $clone = $clone->withHeader(str_replace('_', '-', $name), $value);
+            $this->withHeader(str_replace('_', '-', $name), $value);
         }
-        return $clone;
+        return $this;
     }
 
     /**
@@ -124,10 +125,8 @@ trait MessageTrait
     public function withAddedHeader($name, $value)
     {
         $normalized = strtolower($name);
-
-        $clone = &$this;
-        $clone->headers[$name] = $value;
-        return $clone;
+        $this->headers[$normalized] = $value;
+        return $this;
     }
 
     /**
@@ -142,10 +141,10 @@ trait MessageTrait
             return $this;
         }
 
-        $clone = &$this;
-        unset($clone->headers[$normalized]);
 
-        return $clone;
+        unset($this->headers[$normalized]);
+
+        return $this;
     }
 
     /**
@@ -195,9 +194,9 @@ trait MessageTrait
             return $this;
         }
 
-        $clone = &$this;
-        $clone->stream = $body;
-        return $clone;
+
+        $this->stream = $body;
+        return $this;
     }
 
     /**
