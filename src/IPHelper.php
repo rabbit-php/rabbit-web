@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Rabbit\Web;
@@ -12,13 +13,7 @@ use Rabbit\Base\Helper\ArrayHelper;
  */
 class IPHelper
 {
-    /**
-     * 获取客户端Ip
-     *
-     * @param ServerRequestInterface $request
-     * @return string
-     */
-    public static function getClientIp(ServerRequestInterface $request)
+    public static function getClientIp(ServerRequestInterface $request): string
     {
         if ($ip = $request->getHeaderLine('X-REAL-IP')) {
             return $ip;

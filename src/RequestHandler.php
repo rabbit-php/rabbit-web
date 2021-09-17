@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Rabbit\Web;
@@ -8,7 +9,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Rabbit\Base\Core\BaseObject;
-use Throwable;
 use function is_string;
 
 /**
@@ -20,11 +20,6 @@ class RequestHandler extends BaseObject implements RequestHandlerInterface
     protected ?array $middlewares = null;
     private int $offset = 0;
 
-    /**
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface
-     * @throws Throwable
-     */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         if (empty($this->middlewares[$this->offset])) {

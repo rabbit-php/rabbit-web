@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Rabbit\Web;
@@ -9,34 +10,28 @@ namespace Rabbit\Web;
  */
 class Cookie
 {
-    /** @var string */
     protected string $name;
-    /** @var string|null */
+
     protected string $value;
-    /** @var string|null */
+
     protected string $domain;
-    /** @var int */
+
     protected int $expire;
-    /** @var string */
+
     protected string $path;
-    /** @var bool */
+
     protected bool $secure;
-    /** @var bool */
+
     protected bool $httpOnly;
-    /** @var bool */
+
     private bool $raw;
-    /** @var mixed|string */
+
     private string $sameSite;
 
     const SAMESITE_LAX = 'lax';
     const SAMESITE_STRICT = 'strict';
 
-    /**
-     * @param $cookie
-     * @param bool $decode
-     * @return static
-     */
-    public static function fromString($cookie, $decode = false)
+    public static function fromString(string $cookie, bool $decode = false)
     {
         $data = array(
             'expires' => 0,
@@ -74,22 +69,19 @@ class Cookie
             }
         }
 
-        return new static($data['name'], $data['value'], $data['expires'], $data['path'], $data['domain'],
-            $data['secure'], $data['httponly'], $data['raw'], $data['samesite']);
+        return new static(
+            $data['name'],
+            $data['value'],
+            $data['expires'],
+            $data['path'],
+            $data['domain'],
+            $data['secure'],
+            $data['httponly'],
+            $data['raw'],
+            $data['samesite']
+        );
     }
 
-    /**
-     * Cookie constructor.
-     * @param string $name
-     * @param string|null $value
-     * @param int $expire
-     * @param string $path
-     * @param string|null $domain
-     * @param bool $secure
-     * @param bool $httpOnly
-     * @param bool $raw
-     * @param string|null $sameSite
-     */
     public function __construct(
         string $name,
         string $value = null,
@@ -100,8 +92,7 @@ class Cookie
         bool $httpOnly = true,
         bool $raw = false,
         string $sameSite = null
-    )
-    {
+    ) {
         // from PHP source code
         if (preg_match("/[=,; \t\r\n\013\014]/", $name)) {
             throw new \InvalidArgumentException(sprintf('The cookie name "%s" contains invalid characters.', $name));
@@ -131,9 +122,6 @@ class Cookie
         $this->sameSite = $sameSite;
     }
 
-    /**
-     * @return string
-     */
     public function __toString(): string
     {
         $str = ($this->isRaw() ? $this->getName() : urlencode($this->getName())) . '=';
@@ -145,9 +133,9 @@ class Cookie
 
             if (0 !== $this->getExpiresTime()) {
                 $str .= '; expires=' . gmdate(
-                        'D, d-M-Y H:i:s T',
-                        $this->getExpiresTime()
-                    ) . '; max-age=' . $this->getMaxAge();
+                    'D, d-M-Y H:i:s T',
+                    $this->getExpiresTime()
+                ) . '; max-age=' . $this->getMaxAge();
             }
         }
 
@@ -174,89 +162,56 @@ class Cookie
         return $str;
     }
 
-    /**
-     * @return mixed
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @return null
-     */
     public function getValue(): ?string
     {
         return $this->value;
     }
 
-    /**
-     * @return null|string
-     */
     public function getDomain(): ?string
     {
         return $this->domain;
     }
 
-    /**
-     * @return int
-     */
     public function getExpiresTime(): int
     {
         return $this->expire;
     }
 
-    /**
-     * @return int
-     */
     public function getMaxAge(): int
     {
         return 0 !== $this->expire ? $this->expire - time() : 0;
     }
 
-    /**
-     * @return string
-     */
     public function getPath(): string
     {
         return $this->path;
     }
 
-    /**
-     * @return bool
-     */
     public function isSecure(): bool
     {
         return $this->secure;
     }
 
-    /**
-     * @return bool
-     */
     public function isHttpOnly(): bool
     {
         return $this->httpOnly;
     }
 
-    /**
-     * @return bool
-     */
     public function isCleared(): bool
     {
         return $this->expire < time();
     }
 
-    /**
-     * @return bool
-     */
     public function isRaw(): bool
     {
         return $this->raw;
     }
 
-    /**
-     * @return null|string
-     */
     public function getSameSite(): ?string
     {
         return $this->sameSite;

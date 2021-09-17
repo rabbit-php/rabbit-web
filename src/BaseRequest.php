@@ -16,59 +16,26 @@ class BaseRequest implements ServerRequestInterface
 {
     use MessageTrait;
 
-    /**
-     * @var array
-     */
     private array $attributes = [];
 
-    /**
-     * @var array
-     */
     private array $cookieParams = [];
 
-    /** @var array  */
     private array $parsedBody;
 
-    /** @var array  */
     private array $bodyParams;
 
-    /**
-     * @var array
-     */
     private array $queryParams = [];
 
-    /**
-     * @var array
-     */
     private array $serverParams = [];
 
-    /**
-     * @var array
-     */
     private array $uploadedFiles = [];
 
-    /**
-     * @var string
-     */
     private string $method;
 
-    /**
-     * @var UriInterface
-     */
-    private $uri;
+    private UriInterface $uri;
 
-    /**
-     * @var string
-     */
     private string $requestTarget;
 
-    /**
-     * BaseRequest constructor.
-     * @param array $query
-     * @param array $body
-     * @param array $headers
-     * @param array $server
-     */
     public function __construct(array $query = [], array $body = [], array $headers = [], array $server = [])
     {
         $this->withQueryParams($query)
@@ -77,32 +44,18 @@ class BaseRequest implements ServerRequestInterface
         $this->uri = self::getUriFromGlobals($headers, $server);
     }
 
-    /**
-     * @param array|object|null $data
-     * @return BaseRequest
-     */
     public function withParsedBody($data)
     {
-
         $this->parsedBody = $data;
         return $this;
     }
 
-    /**
-     * @param array $query
-     * @return Request|static
-     */
     public function withQueryParams(array $query)
     {
-
         $this->queryParams = $query;
         return $this;
     }
 
-    /**
-     * @param array $headers
-     * @return BaseRequest
-     */
     private function setHeaders(array $headers): BaseRequest
     {
         $this->headers = [];
@@ -118,11 +71,6 @@ class BaseRequest implements ServerRequestInterface
         return $this;
     }
 
-    /**
-     * @param array $headers
-     * @param array $server
-     * @return Uri
-     */
     private static function getUriFromGlobals(array $headers = [], array $server = []): Uri
     {
         $uri = new Uri();
@@ -176,21 +124,12 @@ class BaseRequest implements ServerRequestInterface
         return $uri;
     }
 
-    /**
-     * @param array $serverParams
-     * @return BaseRequest
-     */
     public function withServerParams(array $serverParams): BaseRequest
     {
-
         $this->serverParams = $serverParams;
         return $this;
     }
 
-    /**
-     * @param array $cookies
-     * @return Request|static
-     */
     public function withCookieParams(array $cookies)
     {
 
@@ -198,42 +137,26 @@ class BaseRequest implements ServerRequestInterface
         return $this;
     }
 
-    /**
-     * @return array
-     */
     public function getServerParams()
     {
         return $this->serverParams;
     }
 
-    /**
-     * @return array
-     */
     public function getCookieParams()
     {
         return $this->cookieParams;
     }
 
-    /**
-     * @return array
-     */
     public function getQueryParams()
     {
         return $this->queryParams;
     }
 
-    /**
-     * @return array
-     */
     public function getUploadedFiles()
     {
         return $this->uploadedFiles;
     }
 
-    /**
-     * @param array $uploadedFiles
-     * @return Request|static
-     */
     public function withUploadedFiles(array $uploadedFiles)
     {
 
@@ -241,27 +164,16 @@ class BaseRequest implements ServerRequestInterface
         return $this;
     }
 
-    /**
-     * @return array|null|object
-     */
     public function getParsedBody()
     {
         return $this->parsedBody;
     }
 
-    /**
-     * @return array
-     */
     public function getAttributes()
     {
         return $this->attributes;
     }
 
-    /**
-     * @param string $name
-     * @param null $default
-     * @return mixed|null
-     */
     public function getAttribute($name, $default = null)
     {
         return array_key_exists($name, $this->attributes) ? $this->attributes[$name] : $default;
@@ -273,10 +185,6 @@ class BaseRequest implements ServerRequestInterface
         return $this;
     }
 
-    /**
-     * @param string $name
-     * @return $this|Request|static
-     */
     public function withoutAttribute($name)
     {
         if (false === array_key_exists($name, $this->attributes)) {
@@ -289,9 +197,6 @@ class BaseRequest implements ServerRequestInterface
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getRequestTarget()
     {
         if ($this->requestTarget !== null) {
@@ -309,33 +214,21 @@ class BaseRequest implements ServerRequestInterface
         return $target;
     }
 
-    /**
-     * @param mixed $requestTarget
-     * @return Request|static
-     */
     public function withRequestTarget($requestTarget)
     {
         if (preg_match('#\s#', $requestTarget)) {
             throw new \InvalidArgumentException('Invalid request target provided; cannot contain whitespace');
         }
 
-
         $this->requestTarget = $requestTarget;
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getMethod()
     {
         return $this->method;
     }
 
-    /**
-     * @param string $method
-     * @return Request|static
-     */
     public function withMethod($method)
     {
         $method = strtoupper($method);
@@ -348,25 +241,16 @@ class BaseRequest implements ServerRequestInterface
         return $this;
     }
 
-    /**
-     * @return UriInterface|Request|Uri
-     */
-    public function getUri()
+    public function getUri(): UriInterface
     {
         return $this->uri;
     }
 
-    /**
-     * @param UriInterface $uri
-     * @param bool $preserveHost
-     * @return $this|Request
-     */
     public function withUri(UriInterface $uri, $preserveHost = false)
     {
         if ($uri === $this->uri) {
             return $this;
         }
-
 
         $this->uri = $uri;
 
@@ -377,9 +261,6 @@ class BaseRequest implements ServerRequestInterface
         return $this;
     }
 
-    /**
-     *
-     */
     private function updateHostFromUri(): void
     {
         $host = $this->uri->getHost();

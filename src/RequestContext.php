@@ -12,17 +12,11 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 class RequestContext
 {
-    /**
-     * @param ServerRequestInterface $request
-     */
     public static function set(ServerRequestInterface $request)
     {
         getContext()['request'] = $request;
     }
 
-    /**
-     * @return ServerRequestInterface|null
-     */
     public static function get(): ?ServerRequestInterface
     {
         $context = getContext();

@@ -12,17 +12,11 @@ use Psr\Http\Message\ResponseInterface;
  */
 class ResponseContext
 {
-    /**
-     * @param ResponseInterface $response
-     */
     public static function set(ResponseInterface $response)
     {
         getContext(getRootId())['response'] = $response;
     }
 
-    /**
-     * @return ResponseInterface|null
-     */
     public static function get(): ?ResponseInterface
     {
         $context = getContext(getRootId());

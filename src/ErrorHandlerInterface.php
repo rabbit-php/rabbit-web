@@ -13,12 +13,5 @@ use Psr\Http\Message\ResponseInterface;
  */
 interface ErrorHandlerInterface
 {
-    /**
-     * @Author Albert 63851587@qq.com
-     * @DateTime 2020-10-23
-     * @param \Throwable $throw
-     * @param \Psr\Http\Message\ResponseInterface $response
-     * @return \Psr\Http\Message\ResponseInterface
-     */
     public function handle(Throwable $throw, ResponseInterface $response): void;
 }

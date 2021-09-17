@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Rabbit\Web;
@@ -12,10 +13,6 @@ use Rabbit\Base\App;
  */
 class UploadedFile implements UploadedFileInterface
 {
-
-    /**
-     * @var int[]
-     */
     private static array $errors = [
         UPLOAD_ERR_OK,
         UPLOAD_ERR_INI_SIZE,
@@ -27,51 +24,25 @@ class UploadedFile implements UploadedFileInterface
         UPLOAD_ERR_EXTENSION,
     ];
 
-    /**
-     * @var string
-     */
     private string $clientFilename;
 
-    /**
-     * @var string
-     */
     private string $clientMediaType;
 
-    /**
-     * @var int
-     */
     private int $error;
 
-    /**
-     * @var null|string
-     */
     private ?string $tmpFile;
 
-    /**
-     * @var bool
-     */
     private bool $moved = false;
 
-    /**
-     * @var int
-     */
     private int $size;
 
-    /**
-     * @param string $tmpFile
-     * @param int $size
-     * @param int $errorStatus
-     * @param string|null $clientFilename
-     * @param string|null $clientMediaType
-     */
     public function __construct(
         string $tmpFile,
         int $size,
         int $errorStatus,
         ?string $clientFilename = null,
         ?string $clientMediaType = null
-    )
-    {
+    ) {
         $this->setError($errorStatus)
             ->setSize($size)
             ->setClientFilename($clientFilename)
@@ -79,24 +50,13 @@ class UploadedFile implements UploadedFileInterface
         $this->isOk() && $this->setFile($tmpFile);
     }
 
-    /**
-     * Depending on the value set file or stream variable
-     *
-     * @param string $file
-     * @return $this
-     * @throws InvalidArgumentException
-     */
-    private function setFile(string $file)
+    private function setFile(string $file): self
     {
         $this->tmpFile = $file;
         return $this;
     }
 
-    /**
-     * @param int $error
-     * @return $this
-     */
-    private function setError(int $error)
+    private function setError(int $error): self
     {
         if (false === in_array($error, UploadedFile::$errors)) {
             throw new \InvalidArgumentException('Invalid error status for UploadedFile');
@@ -106,58 +66,35 @@ class UploadedFile implements UploadedFileInterface
         return $this;
     }
 
-    /**
-     * @param int $size
-     * @return $this
-     * @throws \InvalidArgumentException
-     */
-    private function setSize(int $size)
+    private function setSize(int $size): self
     {
         $this->size = $size;
         return $this;
     }
 
-    /**
-     * @param string|null $clientFilename
-     * @return $this
-     * @throws \InvalidArgumentException
-     */
-    private function setClientFilename(?string $clientFilename)
+    private function setClientFilename(?string $clientFilename): self
     {
         $this->clientFilename = $clientFilename;
         return $this;
     }
 
-    /**
-     * @param string|null $clientMediaType
-     * @return $this
-     * @throws \InvalidArgumentException
-     */
-    private function setClientMediaType(?string $clientMediaType)
+    private function setClientMediaType(?string $clientMediaType): self
     {
         $this->clientMediaType = $clientMediaType;
         return $this;
     }
 
-    /**
-     * Return true if there is no upload error
-     *
-     * @return boolean
-     */
     private function isOk(): bool
     {
         return $this->error === UPLOAD_ERR_OK;
     }
 
-    /**
-     * @return boolean
-     */
     public function isMoved(): bool
     {
         return $this->moved;
     }
 
-    private function validateActive()
+    private function validateActive(): void
     {
         if (false === $this->isOk()) {
             throw new \RuntimeException('Cannot retrieve stream due to upload error');
@@ -168,25 +105,15 @@ class UploadedFile implements UploadedFileInterface
         }
     }
 
-    /**
-     * @return \Psr\Http\Message\StreamInterface|void
-     */
     public function getStream()
     {
         throw new \BadMethodCallException('Not implemented');
     }
 
-    /**
-     * @param string $targetPath
-     */
     public function moveTo($targetPath)
     {
         $targetPath = App::getAlias($targetPath);
         $this->validateActive();
-
-        if (!$this->isStringNotEmpty($targetPath)) {
-            throw new \InvalidArgumentException('Invalid path provided for move operation');
-        }
 
         if ($this->tmpFile) {
             $this->moved = php_sapi_name() == 'cli' ? rename($this->tmpFile, $targetPath) : move_uploaded_file($this->tmpFile, $targetPath);
@@ -197,41 +124,26 @@ class UploadedFile implements UploadedFileInterface
         }
     }
 
-    /**
-     * @return int|null
-     */
     public function getSize()
     {
         return $this->size;
     }
 
-    /**
-     * @return int
-     */
     public function getError()
     {
         return $this->error;
     }
 
-    /**
-     * @return string|null
-     */
     public function getClientFilename()
     {
         return $this->clientFilename;
     }
 
-    /**
-     * @return string|null
-     */
     public function getClientMediaType()
     {
         return $this->clientMediaType;
     }
 
-    /**
-     * @return array
-     */
     public function toArray(): array
     {
         return [
@@ -243,9 +155,6 @@ class UploadedFile implements UploadedFileInterface
         ];
     }
 
-    /**
-     * @return string
-     */
     public function __toString()
     {
         return json_encode($this->toArray());

@@ -11,11 +11,6 @@ use Rabbit\HttpServer\Exceptions\HttpException;
 
 class ErrorHandler implements ErrorHandlerInterface
 {
-    /**
-     * @param Throwable $throw
-     * @return ResponseInterface
-     * @throws Throwable
-     */
     public function handle(Throwable $throw, ResponseInterface $response): void
     {
         $message = ExceptionHelper::convertExceptionToArray($throw);

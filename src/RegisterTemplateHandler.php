@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Rabbit\Web;
 
 use Rabbit\Log\Logger;
-use DI\NotFoundException;
-use DI\DependencyException;
 use Rabbit\Log\ConsoleColor;
 use Rabbit\Base\Core\Context;
 use Rabbit\Log\TemplateInterface;
@@ -17,22 +15,13 @@ use Rabbit\Log\TemplateInterface;
  */
 class RegisterTemplateHandler implements TemplateInterface
 {
-    /** @var array */
     protected array $possibleStyles = [];
 
-    /**
-     * RegisterTemplateHandler constructor.
-     * @throws DependencyException
-     * @throws NotFoundException
-     */
     public function __construct()
     {
         $this->possibleStyles = (array)(create(ConsoleColor::class)->getPossibleStyles());
     }
 
-    /**
-     * @return array
-     */
     public function handle(): array
     {
         if (($request = Context::get(Logger::CONTEXT_KEY)) === null) {

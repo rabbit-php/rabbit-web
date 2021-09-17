@@ -3,7 +3,7 @@
     "description": "rabbit web",
     "type": "library",
     "require": {
-        "php": ">=7.4.0",
+        "php": ">=8.0.0",
         "rabbit/base": "dev-master",
         "psr/http-message": "^1.0",
         "psr/http-server-handler": "^1.0",
