@@ -164,7 +164,7 @@ trait MessageTrait
             $normalized = strtolower($header);
             if (isset($this->headerNames[$normalized])) {
                 $header = $this->headerNames[$normalized];
-                $this->headers[$header] = array_merge($this->headers[$header], $value);
+                $this->headers[$header] = [...$this->headers[$header], ...$value];
             } else {
                 $this->headerNames[$normalized] = $header;
                 $this->headers[$header] = $value;
