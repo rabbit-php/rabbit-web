@@ -12,9 +12,6 @@ use Psr\Http\Message\StreamInterface;
  */
 class SwooleStream implements StreamInterface
 {
-    private int $hwm;
-    private $buffer = '';
-
     /**
      * @param int $hwm High water mark, representing the preferred maximum
      *                 buffer size. If the size of the buffer exceeds the high
@@ -22,10 +19,8 @@ class SwooleStream implements StreamInterface
      *                 but will return false to inform writers to slow down
      *                 until the buffer has been drained by reading from it.
      */
-    public function __construct(string $buffer = '', int $hwm = 16384)
+    public function __construct(private string $buffer = '', private int $hwm = 16384)
     {
-        $this->hwm = $hwm;
-        $this->buffer = $buffer;
     }
 
     public function __toString()
