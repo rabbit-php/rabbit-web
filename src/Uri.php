@@ -190,7 +190,7 @@ class Uri implements UriInterface
             $result = [];
         } else {
             $decodedKey = rawurldecode($key);
-            $result = array_filter(explode('&', $current), function ($part) use ($decodedKey) {
+            $result = array_filter(explode('&', $current), function (string $part) use ($decodedKey): bool {
                 return rawurldecode(explode('=', $part)[0]) !== $decodedKey;
             });
         }
