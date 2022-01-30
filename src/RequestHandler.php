@@ -27,7 +27,7 @@ class RequestHandler extends BaseObject implements RequestHandlerInterface
         } else {
             $handler = $this->middlewares[$this->offset];
         }
-        is_string($handler) && $handler = service($handler);
+        is_string($handler) && $handler = create($handler);
 
         if (!$handler instanceof MiddlewareInterface) {
             throw new \InvalidArgumentException('Invalid Handler. It must be an instance of MiddlewareInterface');
